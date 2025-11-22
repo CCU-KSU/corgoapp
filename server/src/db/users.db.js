@@ -21,25 +21,49 @@ export const setCustomUserRoleClaim = async (uid, role) => {
 
 /**
  * Creates a new user profile document in the 'users' collection.
- * It initializes all required fields based on your fb.json structure.
- * @param {string} uid - The Firebase User ID (UID).
- * @param {object} profileData - The essential data from the request body.
- * @param {string} role - The role to save in the document (should match the claim).
+ * @param {string} uid
+ * @param {object} profileData
+ * @param {string} role 
  */
-export const createProfileInDb = async (uid, profileData) => {
-    const defaultProfile = {
-        email: profileData.email,
-        firstName: profileData.firstName || '', 
-        goals: [], 
-        checklistProgressCollection: {}, 
-        devicePlatform: null,
-        experienceLvl: null,
-        touAgreed: profileData.touAgreed,
-        touAgreedDate: profileData.touAgreedDate,
-        touAgreedRev: profileData.touAgreedRev,
-        role: profileData.role
-    };
-
+export const createProfileInDb = async (uid, defaultProfileData) => {
     const profileRef = db.collection(USERS_COLLECTION).doc(uid);
-    await profileRef.set(defaultProfile);
+    await profileRef.set(defaultProfileData);
+};
+
+/**
+ * Retrieves profile data from the 'users' collection.
+ * @param {string} uid - The Firebase User ID (UID).
+ */
+export const getUserProfileDb = async (uid) => {
+    const profileRef = db.collection(USERS_COLLECTION).doc(uid);
+    const profileData = await profileRef.get();
+    return profileData.data();
+};
+
+/**
+ * Updates a user profile based on provided data
+ * @param {string} uid
+ * @param {object} updatedProfileData
+ */
+export const updateProfileDb = async (uid, email, updatedProfileData) => {
+    const profileRef = db.collection(USERS_COLLECTION).doc(uid);
+    await profileRef.update(updatedProfileData);
+
+    const originalEmail = email
+
+
+    if (updatedProfileData.email) {
+        try {
+            await auth.updateUser(uid, {
+                email: updatedProfileData.email,
+            });
+            console.log(`Firebase Auth email successfully updated for user ${uid}.`);
+        } catch (error) {
+            console.error("Error updating Firebase Auth email:", error);
+            if (originalEmail) {
+                await profileRef.update({ email: originalEmail });
+                console.log(`Firestore email for user ${uid} reverted to ${originalEmail} due to Auth failure.`);
+            }
+        }
+    }
 };

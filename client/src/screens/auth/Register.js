@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiCall } from "../../utils/api";
 
@@ -7,8 +7,7 @@ import Input from "../../components/input/Input";
 import InputTickBox from "../../components/input/InputTickBox";
 import Button from "../../components/button/Button";
 import Link from "../../components/button/Link";
-import Notice from "../../components/text/Notice";
-import Error from "../../components/text/Error";
+import Message from "../../components/text/Message";
 
 const PASSWORD_REQUIREMENTS = {
     minLength: 8, 
@@ -18,8 +17,17 @@ const PASSWORD_REQUIREMENTS = {
     hasSpecialChar: /(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/
 };
 
-const Register = () => {    
+const Register = ({ setHeaderParams }) => {    
     const { register } = useAuth();
+
+    useEffect(() => {
+        setHeaderParams(curr => ({
+            ...curr,
+            headerLabel: "Create Account",
+            showAccount: false,
+            backNav: "/login"
+        }));
+    }, [setHeaderParams]);
 
     const [firstName, setFirstName] = useState("")
     const [email, setEmail] = useState("");
@@ -27,35 +35,38 @@ const Register = () => {
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [touAgreement, setTouAgreement] = useState(false);
 
-    const [error, setError] = useState("");
+    const [message, setMessage] = useState({
+        type: "success",
+        message: ""
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== passwordConfirm) {
-            setError("Passwords do not match.");
+            setMessage({ type: "error", message: "Passwords do not match."});
             return;
         }
 
         if (!PASSWORD_REQUIREMENTS.hasLowerCase.test(password)) {
-            setError("Password must contain at least one lowercase letter.");
+            setMessage({ type: "error", message: "Password must contain at least one lowercase letter."});
             return;
         }
         if (password.length < PASSWORD_REQUIREMENTS.minLength) {
-            setError(`Password must be at least ${PASSWORD_REQUIREMENTS.minLength} characters long.`);
+            setMessage({ type: "error", message: `Password must be at least ${PASSWORD_REQUIREMENTS.minLength} characters long.`});
             return;
         }
         if (!PASSWORD_REQUIREMENTS.hasNumber.test(password)) {
-            setError("Password must contain at least one number.");
+            setMessage({ type: "error", message: "Password must contain at least one number."});
             return;
         }
         if (!PASSWORD_REQUIREMENTS.hasSpecialChar.test(password)) {
-            setError("Password must contain at least one special character.");
+            setMessage({ type: "error", message: "Password must contain at least one special character."});
             return;
         }
 
         try {
 			e.preventDefault();
-            setError("");
+            setMessage({ type: "error", message: ""});
 			await register(email, password);
             await apiCall("/users/register", {
 				method: 'POST',
@@ -65,16 +76,17 @@ const Register = () => {
 				},
 			});
 		} catch (error) {
-			setError(`Failed to create an account: ${error.message}`);
+            setMessage({ type: "error", message: `Failed to create an account: ${error.message}`});
 		}
     }
 
     return (
         <>
             <div className="center-piece">
-                <h1>Sign Up!</h1>
+                {/* <h1>Sign Up!</h1> */}
                 <Form id={"register"} onSubmit={handleSubmit}>
-                    {error && <Error message={error} isCentered={true}/>}
+                    <Message type={"notice"} message={"Fill out the fallowing."} isCentered />
+                    <Message type={message.type} message={message.message} isCentered />
                     <Input
                         id={"firstName"}
                         type={"text"}
@@ -93,10 +105,7 @@ const Register = () => {
                         value={email}
                         autoComplete={"email"}
                     />
-                    <Notice
-                        message={"Password must be lowercase, at least 8 characters long, have at least one number, and have at least one special character (@, #, %, etc.)"}
-                        isCentered={true}
-                    />
+                    <Message type={"notice"} message={"Password must be lowercase, at least 8 characters long, have at least one number, and have at least one special character (@, #, %, etc.)"} isCentered />
                     <Input
                         id={"password"}
                         type={"password"}
@@ -137,6 +146,7 @@ const Register = () => {
                         label={"I have an account"}
                         target={"/login"}
                         buttonLike
+                        showIcon={false}
                     />
                 </Form>
             </div>

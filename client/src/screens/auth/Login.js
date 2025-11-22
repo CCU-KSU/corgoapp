@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 import BodySub from "../../components/container/BodySub";
@@ -7,26 +7,36 @@ import Form from "../../components/form/Form";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 import Link from "../../components/button/Link";
-import Notice from "../../components/text/Notice";
-import Error from "../../components/text/Error";
+import Message from "../../components/text/Message";
 
-const Login = () => {
-    
+const Login = ({ setHeaderParams }) => {
     const { login } = useAuth();
+
+    useEffect(() => {
+        setHeaderParams(curr => ({
+            ...curr,
+            headerLabel: "Login",
+            showAccount: false,
+            backNav: "/catalog"
+        }));
+    }, [setHeaderParams]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [error, setError] = useState("");
+    const [message, setMessage] = useState({
+        type: "success",
+        message: ""
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            setError("");
+            setMessage({ type: "error", message: ""});
 			e.preventDefault();
 			await login(email, password);
 		} catch (error) {
-			setError(error.message)
+			setMessage({ type: "error", message: error.message});
 		}
     }
 
@@ -36,8 +46,8 @@ const Login = () => {
                 <div className="center-piece">
                     <h1>Welcome Back!</h1>
                     <Form id={"login"} onSubmit={handleSubmit}>
-                        {error && <Error message={error}/>}
-                        <Notice message={"Enter your credentials below to login."}/>
+                        <Message type={message.type} message={message.message} isCentered />
+                        <Message type={"notice"} message={"Enter your credentials below to login."} isCentered />
                         <Input
                             id={"email"}
                             type={"email"}
@@ -64,11 +74,13 @@ const Login = () => {
                             label={"I don't have an account"}
                             target={"/register"}
                             buttonLike
+                            showIcon={false}
                         />
                         <Link
                             label={"I forgot my password"}
                             target={"/reset"}
                             buttonLike
+                            showIcon={false}
                         />
                     </Form>
                         

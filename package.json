@@ -1,8 +1,16 @@
 {
   "name": "Corgo App",
   "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "client-admin",
+    "server",
+    "firebase",
+    "firebase/functions" 
+  ],
   "scripts": {
-    "start-all": "concurrently \"npm run start --prefix client\" \"npm run dev --prefix server\""
+    "start-all-dev": "concurrently \"npm run start --prefix client\" \"npm run start --prefix client-admin\" \"npm run dev --prefix server\"",
+    "start-emulators": "npm run dev --prefix firebase"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

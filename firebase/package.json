@@ -1,0 +1,16 @@
+{
+  "name": "Firebase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "firebase emulators:start --only auth,firestore,functions --import \"./.emulator_data\" --export-on-exit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "firebase-tools": "^14.26.0"
+  }
+}

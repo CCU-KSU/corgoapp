@@ -2,10 +2,10 @@ import { initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
-const app = initializeApp({});
+const projectId = process.env.GOOGLE_CLOUD_PROJECT;
+
+const app = initializeApp({ projectId: projectId });
 
 export const auth = getAuth(app);
 
-const dbName = process.env.FIREBASE_DB_NAME
-
-export const db = getFirestore(app, dbName);
+export const db = getFirestore(app);

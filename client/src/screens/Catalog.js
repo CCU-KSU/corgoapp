@@ -1,64 +1,35 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useEffect } from "react";
+// import { useEffect, useState } from "react";
+// import { useAuth } from "../contexts/AuthContext";
 
-import Button from "../components/button/Button";
-import Link from "../components/button/Link";
+// import Button from "../components/button/Button";
+// import ButtonIcon from '../components/button/ButtonIcon';
+// import Link from "../components/button/Link";
 
-import LoadingGate from "../components/effect/LoadingGate";
+// import LoadingGate from "../components/effect/LoadingGate";
+import NotFound from './error/NotFound';
 
-const Catalog = () => {
-    const { currentUser, logout } = useAuth();
-    const [loadingState, setLoadingState] = useState(true);
-
-    const handleLogout = async () => {
-		try {
-			await logout()
-		} catch (error) {
-			alert("Failed to logout!");
-		}
-	}
+const Catalog = ({ setHeaderParams }) => {
 
     useEffect(() => {
-        const delay = (ms) => {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        };
+        setHeaderParams(curr => ({
+            ...curr,
+            headerLabel: "Catalog",
+            showAccount: true,
+            backNav: ""
+        }));
+    }, [setHeaderParams]);
 
-        const finishLoading = async () => {
-            const seconds = 3;
-            const time = (seconds * 1000);
-            await delay(time);
-            setLoadingState(false);
-        };
-
-        if (loadingState) {
-            finishLoading()
-        }
-    }, [loadingState]);
-
-    const reset = () => {
-        setLoadingState(true);
-    };
-    
     return (
-        <>           
-            <Button
-                label="Reset"
-                action={reset}
-            />
-            <div>
-                <LoadingGate isLoading={loadingState}>
-                    <h1>Loaded</h1>
-                </LoadingGate>
-            </div>
-            {currentUser ? (
-                <Button
-                    label="Logout"
-                    action={handleLogout}
-                />
-            ) : (
-                <Link label={'Login'} target={"/login"} buttonLike/>
-            )}
-        </>
+        <Routes>
+            <Route index element={
+                <span>index</span>
+            }/>
+            <Route path=":itemId" element={<span>item</span>} />
+            <Route path="*" element={<NotFound />} />
+        </Routes>
     );
 }
  

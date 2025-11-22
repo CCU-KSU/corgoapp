@@ -1,0 +1,113 @@
+{
+    "users": {
+        "user_id_1": {
+            "name": "Doe",
+            "email": "dummy@gmail.com",
+            "goals": [
+                "goal_id_1",
+                "goal_id_2"
+            ],
+            "checklistProgressCollection": {
+                "app_id_1": {
+                    "cl_item_id_1": true,
+                    "cl_item_id_2": false
+                },
+                "app_id_2": {
+                    "cl_item_id_3": true,
+                    "cl_item_id_4": false
+                }
+            },
+            "devicePlatform": "platform_id_1",
+            "experienceLvl": "lvl_id_1",
+            "touAgreed": true,
+            "touAgreedDate": "2020-09-09",
+            "touAgreedRev": 1,
+            "role": "manager"
+        }
+    },
+    "catalog": {
+        "app_id_1": {
+            "name": "WatsApp",
+            "about": "Private messaging across the world",
+            "about-long": "A popular, free, cross-platform instant messaging app that allows users to send text messages, photos, videos, documents, and voice messages using a phone's internet connection instead of a mobile carrier's service",
+            "iconRef": "https://app.logo.com/icon1",
+            "relatedGoals": [
+                "goal_id_1"
+            ],
+            "checklistCollection": {
+                "cl_item_id_1": {
+                    "order": 1,
+                    "label": "Open the Play Store",
+                    "details": "@"
+                },
+                "cl_item_id_2": {
+                    "order": 2,
+                    "label": "Download & Install WatsApp",
+                    "details": "@"
+                }
+            }
+        },
+        "app_id_2": {
+            "name": "MyChart",
+            "about": "Manage your health",
+            "about-long": "MyChart puts your health information in the palm of your hand and helps you conveniently manage care for yourself and your family members.",
+            "iconRef": "https://app.logo.com/icon2",
+            "relatedGoals": [
+                "goal_id_2"
+            ],
+            "checklistCollection": {
+                "cl_item_id_3": {
+                    "order": 1,
+                    "label": "Open the Play Store",
+                    "details": "@"
+                },
+                "cl_item_id_4": {
+                    "order": 2,
+                    "label": "Download & Install MyChart",
+                    "details": "@"
+                }
+            }
+        }
+    },
+    "metadata": {
+        "masterExperienceLevelsList": {
+            "experienceLvl": {
+                "lvl_id_1": {
+                    "label": "Novice",
+                    "order": 1
+                },
+                "lvl_id_2": {
+                    "label": "Intermediate",
+                    "order": 2
+                }
+            },
+            "updatedAt": "2020-09-09"
+        },
+        "masterGoalsList": {
+            "goalsCollection": {
+                
+                "goal_id_1": {
+                    "label": "Communication"
+                },
+                "goal_id_2": { 
+                    "label": "Health & Wellness" 
+                }
+            },
+            "updatedAt": "2020-09-09"
+        },
+        "masterPlatformsList": {
+            "devicePlatformsCollection": {
+                "platform_id_1": {
+                    "label": "Android"
+                },
+                "platform_id_2": {
+                    "label": "iOS"
+                },
+                "platform_id_3": {
+                    "label": "Web Browser"
+                }
+            },
+            "updatedAt": "2020-09-09"
+        }
+    }
+}

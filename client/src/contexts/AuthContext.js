@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from '../configs/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider,deleteUser } from 'firebase/auth';
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -11,17 +11,14 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticating, setIsAuthenticating] = useState(true)
 
     const register = (email, password) => {
-        setIsAuthenticating(true);
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
     const login = (email, password) => {
-        setIsAuthenticating(true);
         return signInWithEmailAndPassword(auth, email, password);
     }
 
     const logout = () => {
-        setIsAuthenticating(true);
         return signOut(auth);
     }
 
@@ -29,16 +26,39 @@ export const AuthProvider = ({children}) => {
         return sendPasswordResetEmail(auth, email);
     }
 
-    const delay = (ms) => {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    };
+    const reauthenticateUser = (email, password) => {
+        const credential = EmailAuthProvider.credential(email, password);
+        return reauthenticateWithCredential(currentUser, credential);
+    }
+
+    const updateUserPassword = (newPassword) => {
+        return updatePassword(currentUser, newPassword);
+    }
+
+    const deleteUserAccount = () => {
+        return deleteUser(currentUser);
+    }
+
+    // // Moved to LoadingGate component
+
+    // const delay = (ms) => {
+    //     return new Promise(resolve => setTimeout(resolve, ms));
+    // };
+
+    // useEffect(() => {
+    //     const MIN_DELAY_MS = 300;
+
+    //     const observe = auth.onAuthStateChanged(async (user) => {
+    //         setCurrentUser(user);
+    //         await delay(MIN_DELAY_MS);
+    //         setIsAuthenticating(false);
+    //     });
+    //     return observe
+    // }, []);
 
     useEffect(() => {
-        const MIN_DELAY_MS = 300;
-
         const observe = auth.onAuthStateChanged(async (user) => {
             setCurrentUser(user);
-            await delay(MIN_DELAY_MS);
             setIsAuthenticating(false);
         });
         return observe
@@ -50,6 +70,9 @@ export const AuthProvider = ({children}) => {
         register,
         logout,
         resetPassword,
+        reauthenticateUser,
+        updateUserPassword,
+        deleteUserAccount,
         isAuthenticating
     };
 
