@@ -1,5 +1,5 @@
 {
-  "name": "Corgo App Client",
+  "name": "corgo-app-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
