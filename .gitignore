@@ -231,6 +231,3 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
-
-# Emulator
-.emulator_data/
