@@ -16,6 +16,7 @@ Onboarding Tool for New Smartphone Users
 
 ## Running the project in `dev` mode
 1. In a terminal at the root directory run `npm run start-emulators`.
+    * Always have this running when developing.
 2. In a second terminal at the root directory, do `npm run start-all-dev`.
 
 

@@ -64,3 +64,7 @@ export const cleanupUserDataOnDelete = functions.auth.user().onDelete(async (use
         throw new Error(`Data cleanup failed for user ${uid}: ${error.message}`);
     }
 });
+
+export const hitMe = functions.https.onRequest(async (req, res) => {
+    res.status(200).json({ message: "Hello World"});
+});

@@ -8,7 +8,7 @@ const Manage = ({ setHeaderParams }) => {
         <>
             <Routes>
                 <Route index element={<Menu setHeaderParams={setHeaderParams}/>}/>
-                <Route path="catalog" element={<Catalog setHeaderParams={setHeaderParams}/>}/>
+                <Route path="catalog/*" element={<Catalog setHeaderParams={setHeaderParams}/>}/>
             </Routes>
         </>
     );
