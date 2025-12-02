@@ -1,4 +1,5 @@
 import { auth } from "../configs/firebase.js";
+import { responseConstructor } from "../utils/index.js";
 
 export const VerifyToken = async (req, res, next) => {
     try {
@@ -9,10 +10,10 @@ export const VerifyToken = async (req, res, next) => {
             return next();
         }
     } catch (error) {
-        return res.json(
-            {
-                message: "Denied! Not Authenticated",
-            }
-        )
+        return res.status(401).json(responseConstructor({
+            success: false,
+            message: "Unauthorized access.",
+            error: error.message
+        }));
     }
 };

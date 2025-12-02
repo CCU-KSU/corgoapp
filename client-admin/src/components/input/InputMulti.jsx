@@ -1,31 +1,31 @@
 import Select from "react-select"
 
-const Dropdown = ({ id=crypto.randomUUID(), placeholder="No Selection", isRequired=false, label, onChange=(() => {}), options=["No Options"], value=[] }) => {
-    const handleInputChange = (m) => {
-        onChange(m.map(obj => obj.value)); 
-    };
+const InputMulti = ({ id=crypto.randomUUID(), placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[] }) => {
+
+    const handleChange = (selected) => {
+        onChange(selected.map(option => option.key));
+    }
+
+    const selectedOptions = options.filter(option => value.includes(option.key));
+    
     return (
         <>
             <div className="input">
                 {label && <label className="input-label">{label}</label>}
                 <Select
                     id={id}
-                    options={options.map(item => ({
-                        value: item,
-                        label: item
-                    }))}
+                    options={options}
+                    getOptionValue={(options) => options.key}
+                    getOptionLabel={(options) => options.label}
+                    onChange={handleChange}
+                    value={selectedOptions}
+                    placeholder={placeholder}
+                    isMulti
+                    closeMenuOnSelect={false}
+                    required={isRequired? true : false}
                     styles={{
                         control: ({ outline, ...provided }) => provided // Removes baked in `outline` from the styling
                     }}
-                    isMulti
-                    placeholder={`-- ${placeholder} --`}
-                    closeMenuOnSelect={false}
-                    required={isRequired? true : false}
-                    onChange={handleInputChange}
-                    value={value.map(item => ({
-                        value: item,
-                        label: item
-                    }))}
                     classNamePrefix={"input-field"}
                 />
             </div>
@@ -33,4 +33,4 @@ const Dropdown = ({ id=crypto.randomUUID(), placeholder="No Selection", isRequir
     );
 }
  
-export default Dropdown;
+export default InputMulti;

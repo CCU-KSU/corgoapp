@@ -10,13 +10,13 @@ import { AuthProvider } from "./contexts/AuthContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<React.StrictMode>
-		<ErrorBoundary FallbackComponent={ErrorScreen}>
-			<BrowserRouter>
+		<BrowserRouter>
+			<ErrorBoundary FallbackComponent={ErrorScreen}>
 				<AuthProvider>
 					<App />
 				</AuthProvider>
-			</BrowserRouter>
-		</ErrorBoundary>
+			</ErrorBoundary>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 

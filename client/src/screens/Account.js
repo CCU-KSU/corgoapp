@@ -6,15 +6,15 @@ import ChangeEmail from "./account/ChangeEmail";
 import ChangePassword from "./auth/ChangePassword";
 import Deactivate from "./account/Deactivate";
 
-const Account = ({ setHeaderParams }) => {
+const Account = ({ setViewParams }) => {
     return (
         <>
             <Routes>
-                <Route index element={<Profile setHeaderParams={setHeaderParams}/>}/>
-                <Route path="edit" element={<EditProfile setHeaderParams={setHeaderParams}/>} />
-                <Route path="change-email" element={<ChangeEmail setHeaderParams={setHeaderParams}/>} />
-                <Route path="change-password" element={<ChangePassword setHeaderParams={setHeaderParams}/>} />
-                <Route path="deactivate" element={<Deactivate setHeaderParams={setHeaderParams}/>} />
+                <Route index element={<Profile setViewParams={setViewParams}/>}/>
+                <Route path="edit" element={<EditProfile setViewParams={setViewParams}/>} />
+                <Route path="change-email" element={<ChangeEmail setViewParams={setViewParams}/>} />
+                <Route path="change-password" element={<ChangePassword setViewParams={setViewParams}/>} />
+                <Route path="deactivate" element={<Deactivate setViewParams={setViewParams}/>} />
             </Routes>
         </>
     );

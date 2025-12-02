@@ -1,3 +1,4 @@
+import { auth } from "../configs/firebase.js";
 import { usersDb } from "../db/index.js"
 import { metadataDb } from "../db/index.js";
 import { cleanUpdateData } from "../utils/index.js";
@@ -52,7 +53,8 @@ export const getUserProfileSvc = async (uid) => {
     return newUserData;
 };
 
-export const updateProfileSvc = async (uid, email, updatedProfileData) => {
+export const updateProfileSvc = async (user, updatedProfileData) => {
+    const { uid, email } = user;
     const newUpdateProfileData = cleanUpdateData(updatedProfileData);
     if (Object.keys(newUpdateProfileData).length === 0) {
         console.log("Update call aborted: No valid fields found in update payload.");
@@ -60,6 +62,23 @@ export const updateProfileSvc = async (uid, email, updatedProfileData) => {
     }
 
     await usersDb.updateProfileDb(uid, email, newUpdateProfileData);
+
+    const originalEmail = email
+
+    if (updatedProfileData.email) {
+        try {
+            await auth.updateUser(uid, {
+                email: updatedProfileData.email,
+            });
+            console.log(`Firebase Auth email successfully updated for user ${uid}.`);
+        } catch (error) {
+            console.error("Error updating Firebase Auth email:", error);
+            if (originalEmail) {
+                await profileRef.update({ email: originalEmail });
+                console.log(`Firestore email for user ${uid} reverted to ${originalEmail} due to Auth failure.`);
+            }
+        }
+    }
 
     return getUserProfileSvc(uid);
 };

@@ -34,18 +34,26 @@
             "relatedGoals": [
                 "goal_id_1"
             ],
-            "checklistCollection": {
-                "cl_item_id_1": {
-                    "order": 1,
-                    "label": "Open the Play Store",
-                    "details": "@"
+            "installLink": {
+                "platform_id_1": {
+                "link": "platform_id_1_link"
                 },
-                "cl_item_id_2": {
-                    "order": 2,
-                    "label": "Download & Install WatsApp",
-                    "details": "@"
+                "platform_id_2": {
+                "link": "platform_id_2_link"
                 }
-            }
+            },
+            "supportingVideos":{
+                "ref_id_1": {
+                    "host": "YouTube",
+                    "id_on_host": "youtube_video_id_1"
+                },
+                "ref_id_2": {
+                    "host": "Vimeo",
+                    "id_on_host": "vimeo_video_id_1"
+                }
+            },
+            "written": "newDate",
+            "edited": "newDate"
         },
         "app_id_2": {
             "name": "MyChart",
@@ -55,18 +63,26 @@
             "relatedGoals": [
                 "goal_id_2"
             ],
-            "checklistCollection": {
-                "cl_item_id_3": {
-                    "order": 1,
-                    "label": "Open the Play Store",
-                    "details": "@"
+            "installLink": {
+                "platform_id_1": {
+                "link": "platform_id_1_link"
                 },
-                "cl_item_id_4": {
-                    "order": 2,
-                    "label": "Download & Install MyChart",
-                    "details": "@"
+                "platform_id_2": {
+                "link": "platform_id_2_link"
                 }
-            }
+            },
+            "supportingVideos":{
+                "ref_id_1": {
+                    "host": "YouTube",
+                    "id_on_host": "youtube_video_id_1"
+                },
+                "ref_id_2": {
+                    "host": "Vimeo",
+                    "id_on_host": "vimeo_video_id_1"
+                }
+            },
+            "written": "newDate",
+            "edited": "newDate"
         }
     },
     "metadata": {

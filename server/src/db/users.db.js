@@ -23,11 +23,15 @@ export const setCustomUserRoleClaim = async (uid, role) => {
  * Creates a new user profile document in the 'users' collection.
  * @param {string} uid
  * @param {object} profileData
- * @param {string} role 
  */
 export const createProfileInDb = async (uid, defaultProfileData) => {
     const profileRef = db.collection(USERS_COLLECTION).doc(uid);
-    await profileRef.set(defaultProfileData);
+    try {
+        await profileRef.set(defaultProfileData);
+    } catch (error) {
+        console.error(`Error creating profile in DB for user ${uid}:`, error);
+        throw new Error("Failed to create user profile in database.");
+    }
 };
 
 /**
@@ -36,8 +40,16 @@ export const createProfileInDb = async (uid, defaultProfileData) => {
  */
 export const getUserProfileDb = async (uid) => {
     const profileRef = db.collection(USERS_COLLECTION).doc(uid);
-    const profileData = await profileRef.get();
-    return profileData.data();
+    try {
+        const profileData = await profileRef.get();
+        if (!profileData.exists) {
+            throw new Error(`Profile not found for UID: ${uid}`);
+        }
+        return profileData.data();
+    } catch (error) {
+        console.error(`Error retrieving profile in DB for user ${uid}:`, error);
+        throw new Error("Failed to retrieve user profile from database.");
+    }
 };
 
 /**
@@ -47,23 +59,10 @@ export const getUserProfileDb = async (uid) => {
  */
 export const updateProfileDb = async (uid, email, updatedProfileData) => {
     const profileRef = db.collection(USERS_COLLECTION).doc(uid);
-    await profileRef.update(updatedProfileData);
-
-    const originalEmail = email
-
-
-    if (updatedProfileData.email) {
-        try {
-            await auth.updateUser(uid, {
-                email: updatedProfileData.email,
-            });
-            console.log(`Firebase Auth email successfully updated for user ${uid}.`);
-        } catch (error) {
-            console.error("Error updating Firebase Auth email:", error);
-            if (originalEmail) {
-                await profileRef.update({ email: originalEmail });
-                console.log(`Firestore email for user ${uid} reverted to ${originalEmail} due to Auth failure.`);
-            }
-        }
+    try {
+        await profileRef.update(updatedProfileData);
+    } catch (error) {
+        console.error(`Error updating profile in DB for user ${uid}:`, error);
+        throw new Error("Failed to update user profile in database.");
     }
 };

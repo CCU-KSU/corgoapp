@@ -1,20 +1,34 @@
-const Dropdown = ({ id=crypto.randomUUID(), placeholder="-- No Selection --", isRequired=false, label, onChange=(() => {}), options=[], value }) => {
-    const handleInputChange = (e) => {
-        onChange(e.target.value); 
-    };
+import Select from "react-select"
+
+const InputDropdown = ({ id=crypto.randomUUID(), placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value="" }) => {
+
+    const handleChange = (selected) => {
+        onChange(selected ? selected.key : null);
+    }
+
+    const selectedOption = options.find(option => option.key === value) || null;
+
     return (
         <>
             <div className="input">
-                {label && <label className="input-label" htmlFor={id}>{label}</label>}
-                <select className="input-field" id={id} name={id} placeholder={placeholder} required={isRequired} onChange={handleInputChange} value={value}>
-                    <option value="" disabled>{placeholder}</option>
-                    {options.map((option, index) => (
-                        <option key={index} value={option.key}>{option.label}</option>
-                    ))}
-                </select>
+                {label && <label className="input-label">{label}</label>}
+                <Select
+                    id={id}
+                    options={options}
+                    getOptionValue={(options) => options.key}
+                    getOptionLabel={(options) => options.label}
+                    onChange={handleChange}
+                    value={selectedOption}
+                    placeholder={placeholder}
+                    required={isRequired? true : false}
+                    styles={{
+                        control: ({ outline, ...provided }) => provided // Removes baked in `outline` from the styling
+                    }}
+                    classNamePrefix={"input-field"}
+                />
             </div>
         </>
     );
 }
  
-export default Dropdown;
+export default InputDropdown;

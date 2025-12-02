@@ -7,8 +7,16 @@ const METADATA_COLLECTIONS = "metadata";
  */
 export const getGoalsDb = async () => {
     const goalsRef = db.collection(METADATA_COLLECTIONS).doc("master_goals");
-    const goals = await goalsRef.get();
-    return goals.data(); 
+    try {
+        const goals = await goalsRef.get();
+        if (!goals.exists || !goals.data()) {
+            throw new Error("Master goals document not found or empty.");
+        }
+        return goals.data(); 
+    } catch (error) {
+        console.error("Error retrieving goals from metadata DB:", error);
+        throw new Error("Failed to retrieve goals data.");
+    }
 };
 
 /**
@@ -16,8 +24,16 @@ export const getGoalsDb = async () => {
  */
 export const getPlatformsDb = async () => {
     const platformsRef = db.collection(METADATA_COLLECTIONS).doc("master_platforms");
-    const platforms = await platformsRef.get();
-    return platforms.data(); 
+    try {
+        const platforms = await platformsRef.get();
+        if (!platforms.exists || !platforms.data()) {
+            throw new Error("Master platforms document not found or empty.");
+        }
+        return platforms.data(); 
+    } catch (error) {
+        console.error("Error retrieving platforms from metadata DB:", error);
+        throw new Error("Failed to retrieve platforms data.");
+    } 
 };
 
 /**
@@ -25,6 +41,14 @@ export const getPlatformsDb = async () => {
  */
 export const getExperiencesDb = async () => {
     const experiencesRef = db.collection(METADATA_COLLECTIONS).doc("master_experience_level");
-    const experiences = await experiencesRef.get();
-    return experiences.data(); 
+    try {
+        const experiences = await experiencesRef.get();
+        if (!experiences.exists || !experiences.data()) {
+            throw new Error("Master experience level document not found or empty.");
+        }
+        return experiences.data(); 
+    } catch (error) {
+        console.error("Error retrieving experiences from metadata DB:", error);
+        throw new Error("Failed to retrieve experience data.");
+    } 
 };

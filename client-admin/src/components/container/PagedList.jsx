@@ -1,30 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const PagedList = ({ component, apiRoute, query, defaultQuery, itemsPerPage=10 }) => {
-    const [listItems, setListItems] = useState([]);
+import Button from "../button/Button";
+import LoadingGate from "../effect/LoadingGate";
+import SpacedItems from "./SpacedItems";
 
-    useEffect(() => {
-        const fetchListItems = async () => {
-            try {
-                const li = await apiCall(apiRoute); // Plus query | defaultQuery if query is empty 
-                setListItems(li);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        fetchListItems()
-    }, [apiRoute, query, defaultQuery]);
 
-    // Page control logic here
-
+const PagedList = ({ ItemComponent, pageItems, loadMore, loading, isMore }) => {
+    
     return (
         <>
-            <div className="paged-list">
-                {listItems.map((li) => {
-                    // component prop here with "li" as a prop
-                })}
-            </div>
-            {/* Page controls */}
+            <SpacedItems>
+                {pageItems.map((item, index) => (
+                    <ItemComponent key={item.id} data={item} />
+                ))}
+                <div className="paged-list-more">
+                    <LoadingGate isLoading={loading}>
+                        <Button 
+                            label={"Show More"}
+                            disabled={!isMore}
+                            action={loadMore}
+                            isSmall
+                        />
+                    </LoadingGate>
+                </div>
+            </SpacedItems>
         </>
     );
 }

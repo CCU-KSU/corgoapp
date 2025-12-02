@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link as A } from "react-router-dom";
+import { Link as A} from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiCall } from "../../utils/api";
 
@@ -9,27 +9,27 @@ import SpacedItems from "../../components/container/SpacedItems";
 import LinkListBox from "../../components/container/LinkListBox";
 import LoadingGate from "../../components/effect/LoadingGate";
 
-const Profile = ({ setHeaderParams }) => {
+const Profile = ({ setViewParams }) => {
     const { logout } = useAuth();
 
     const [profile, setProfile] = useState({});
     const [profileLoadingState, setProfileLoadingState] = useState(true);
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Account",
-            showAccount: false,
-            backNav: "/catalog"
+            backURL: "",
+            showNavBar: true
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     useEffect(() => {
         const fetchProfile = async () => {
             setProfileLoadingState(true);
             try {
                 const resProfile = await apiCall("/users/profile");
-                setProfile(resProfile);
+                setProfile(resProfile.data);                
             } catch (error) {
                 console.error("Profile fetching failed:", error);
             } finally {

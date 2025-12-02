@@ -15,7 +15,7 @@ const PASSWORD_REQUIREMENTS = {
     hasSpecialChar: /(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/
 };
 
-const ChangePassword = ({ setHeaderParams }) => {
+const ChangePassword = ({ setViewParams }) => {
 
     const { currentUser, updateUserPassword, reauthenticateUser } = useAuth();
 
@@ -30,13 +30,13 @@ const ChangePassword = ({ setHeaderParams }) => {
     const [canSubmit, setCanSubmit] = useState(false);
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Change Password",
-            showAccount: false,
-            backNav: "/profile"
+            backURL: "/profile",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     useEffect(() => {
         if (currentPassword || newPassword) {

@@ -21,7 +21,7 @@ const CATALOG_COLLECTIONS = "catalog";
 
 export const getCatalogDb = async () => {
     try {
-        const catalogSnapshot = await db.collection(CATALOG_COLLECTIONS).select("name", "about").get();
+        const catalogSnapshot = await db.collection(CATALOG_COLLECTIONS).select("name", "about", "iconRef").get();
 
         const catalog = catalogSnapshot.docs.map(doc => ({
             id: doc.id,
@@ -29,6 +29,35 @@ export const getCatalogDb = async () => {
         }));
 
         return catalog; 
+    } catch (error) {
+        console.error("Error fetching catalog:", error);
+        throw new Error("Failed to fetch catalog.");
+    }
+};
+
+/**
+ * Fetches a page of the catalog
+ * @param {Date} index - The stating item of the catalog page.
+ */
+export const getCatalogPagedDb = async (index) => {
+
+    const pageSize = 3;
+
+    try {
+        let catalogPageQuery = db.collection(CATALOG_COLLECTIONS).select("name", "about", "iconRef", "written").orderBy("written", "desc");        
+        
+        if (index) {
+            catalogPageQuery = catalogPageQuery.startAfter(index);
+        }
+
+        const catalogPageSnapshot = await catalogPageQuery.limit(pageSize).get();
+        
+        const catalogPage = catalogPageSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        return catalogPage; 
     } catch (error) {
         console.error("Error fetching catalog:", error);
         throw new Error("Failed to fetch catalog.");
@@ -57,8 +86,7 @@ export const getCatalogEntryDb = async (id) => {
  */
 export const createCatalogEntryDb = async (entryData) => {
     try {
-        const newEntry = await db.collection(CATALOG_COLLECTIONS).add(entryData);
-        return newEntry.id;
+        await db.collection(CATALOG_COLLECTIONS).add(entryData);
     } catch (error) {
         console.error("Error posting entry:", error);
         throw new Error("Failed to post entry.");

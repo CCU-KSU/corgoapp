@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import Input from "../../components/input/Input";
 import InputDropdown from "../../components/input/InputDropdown";
+import InputMulti from "../../components/input/InputMulti";
 import Button from "../../components/button/Button";
 
 import Form from "../../components/form/Form";
@@ -12,13 +13,13 @@ import Message from "../../components/text/Message";
 
 import LoadingGate from "../../components/effect/LoadingGate";
 
-const EditProfile = ({ setHeaderParams }) => {
+const EditProfile = ({ setViewParams }) => {
     const navigate = useNavigate();
 
     const [profile, setProfile] = useState({});
     const [editingPrep, setEditingPrep] = useState(true);
-    const [deviceOptions, setDeviceOptions] = useState({});
-    const [experienceOptions, setExperienceOptions] = useState({});
+    const [deviceOptions, setDeviceOptions] = useState([]);
+    const [experienceOptions, setExperienceOptions] = useState([]);
 
     const [message, setMessage] = useState({
         type: "success",
@@ -32,13 +33,13 @@ const EditProfile = ({ setHeaderParams }) => {
     const [canSubmit, setCanSubmit] = useState(false);
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Edit Profile",
-            showAccount: false,
-            backNav: "/profile"
+            backURL: "/profile",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     useEffect(() => {
         if (firstName || device || experience) {
@@ -55,9 +56,9 @@ const EditProfile = ({ setHeaderParams }) => {
                 const resProfile = await apiCall("/users/profile");
                 const resExperiences = await apiCall("/metadata/experiences");
                 const resPlatforms = await apiCall("/metadata/platforms");
-                setProfile(resProfile);
-                setExperienceOptions(resExperiences);
-                setDeviceOptions(resPlatforms);
+                setProfile(resProfile.data);
+                setExperienceOptions(resExperiences.data);
+                setDeviceOptions(resPlatforms.data);
             } catch (error) {
                 console.error("User and Metadata fetching failed:", error);
             } finally {

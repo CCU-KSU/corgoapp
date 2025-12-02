@@ -6,20 +6,20 @@ import BodySub from "../../components/container/BodySub";
 import Form from "../../components/form/Form";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
-import Link from "../../components/button/Link";
+import ButtonLink from "../../components/button/ButtonLink";
 import Message from "../../components/text/Message";
 
-const Login = ({ setHeaderParams }) => {
+const Login = ({ setViewParams }) => {
     const { login } = useAuth();
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Login",
-            showAccount: false,
-            backNav: "/catalog"
+            backURL: "/catalog",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -70,13 +70,13 @@ const Login = ({ setHeaderParams }) => {
                             label={"Login"}
                             type={"submit"}
                         />
-                        <Link
+                        <ButtonLink
                             label={"I don't have an account"}
                             target={"/register"}
                             buttonLike
                             showIcon={false}
                         />
-                        <Link
+                        <ButtonLink
                             label={"I forgot my password"}
                             target={"/reset"}
                             buttonLike

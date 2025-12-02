@@ -9,7 +9,7 @@ import Form from "../../components/form/Form";
 
 import Message from "../../components/text/Message";
 
-const Deactivate = ({ setHeaderParams }) => {
+const Deactivate = ({ setViewParams }) => {
     const { currentUser, deleteUserAccount, reauthenticateUser } = useAuth();
     
     const [acknowledgment, setAcknowledgment] = useState(false)
@@ -17,13 +17,13 @@ const Deactivate = ({ setHeaderParams }) => {
     const [message, setMessage] = useState({ type: "", message: "" });
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
-            headerLabel: "Deactivate Account",
-            showAccount: false,
-            backNav: "/profile"
+            headerLabel: "Deactivate",
+            backURL: "/profile",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
     
     const deactivateAccount = async (e) => {
         e.preventDefault();

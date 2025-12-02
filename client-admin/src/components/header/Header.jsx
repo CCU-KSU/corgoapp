@@ -1,4 +1,4 @@
-import Link from "../button/Link";
+import ButtonLink from "../button/ButtonLink";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const Header = ({ headerParams }) => {
                         action={() => {navigate("/profile")}}
                     />
                 ) : (
-                    <Link
+                    <ButtonLink
                         target={"/login"}
                         buttonLike
                         showIcon={false}

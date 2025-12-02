@@ -11,7 +11,7 @@ import Message from "../../components/text/Message";
 
 import LoadingGate from "../../components/effect/LoadingGate";
 
-const EditProfile = ({ setHeaderParams }) => {
+const EditProfile = ({ setViewParams }) => {
     const navigate = useNavigate();
 
     const [profile, setProfile] = useState({});
@@ -27,13 +27,13 @@ const EditProfile = ({ setHeaderParams }) => {
     const [canSubmit, setCanSubmit] = useState(false);
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Email Address",
-            showAccount: false,
-            backNav: "/profile"
+            backURL: "/profile",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     useEffect(() => {
         if (email) {
@@ -48,7 +48,7 @@ const EditProfile = ({ setHeaderParams }) => {
             setEditingPrep(true);
             try {
                 const resProfile = await apiCall("/users/profile");
-                setProfile(resProfile);
+                setProfile(resProfile.data);
             } catch (error) {
                 console.error("User fetching failed:", error);
             } finally {

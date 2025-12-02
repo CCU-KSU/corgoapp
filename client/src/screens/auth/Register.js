@@ -6,7 +6,7 @@ import Form from "../../components/form/Form";
 import Input from "../../components/input/Input";
 import InputTickBox from "../../components/input/InputTickBox";
 import Button from "../../components/button/Button";
-import Link from "../../components/button/Link";
+import ButtonLink from "../../components/button/ButtonLink";
 import Message from "../../components/text/Message";
 
 const PASSWORD_REQUIREMENTS = {
@@ -17,17 +17,17 @@ const PASSWORD_REQUIREMENTS = {
     hasSpecialChar: /(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/
 };
 
-const Register = ({ setHeaderParams }) => {    
+const Register = ({ setViewParams }) => {    
     const { register } = useAuth();
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Create Account",
-            showAccount: false,
-            backNav: "/login"
+            backURL: "/login",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     const [firstName, setFirstName] = useState("")
     const [email, setEmail] = useState("");
@@ -124,9 +124,9 @@ const Register = ({ setHeaderParams }) => {
                         value={passwordConfirm}
                         autoComplete={"new-password"}
                     />
-                    <Link
+                    <ButtonLink
                         label={"Open & read the Terms of Use"}
-                        target={"/app/tou"}
+                        target={"/tou"}
                         isExternal
                         buttonLike
                     />
@@ -142,7 +142,7 @@ const Register = ({ setHeaderParams }) => {
                         label={"Register"}
                         type={"submit"}
                     />
-                    <Link
+                    <ButtonLink
                         label={"I have an account"}
                         target={"/login"}
                         buttonLike

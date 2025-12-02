@@ -1,19 +1,22 @@
 import { usersService } from "../services/index.js"
+import { responseConstructor } from "../utils/index.js";
 
 export const createProfile = async (req, res) => {
     const { uid, email } = req.user;
     const { firstName, touAgreement } = req.body;
 
     if (!firstName || !touAgreement) {
-        return res.status(400).json({ 
+        return res.status(400).json(responseConstructor({
+            success: false,
             message: "Missing required profile fields.",
-        });
+        }));
     }
 
     if (!touAgreement) {
-        return res.status(400).json({ 
-            message: "Missing required TOU Agreement.", 
-        })
+        return res.status(400).json(responseConstructor({
+            success: false,
+            message: "Missing required TOU Agreement.",
+        }));
     }
 
     try {
@@ -21,16 +24,17 @@ export const createProfile = async (req, res) => {
             firstName,
         });
 
-        res.status(201).json({ 
+        res.status(201).json(responseConstructor({
+            success: true,
             message: "User profile successfully created and role set.",
-            user: result,
-        });
+        }));
     } catch (error) {
         console.error("Profile creation failed:", error);
-        res.status(500).json({ 
+        res.status(500).json(responseConstructor({
+            success: false,
             message: "Internal server error during profile creation.",
-            error: error.message
-        });
+            error: error.message,
+        }));
     }
 };
 
@@ -38,31 +42,40 @@ export const getProfile = async (req, res) => {
     const { uid } = req.user;
     try {
         const result = await usersService.getUserProfileSvc(uid);
-        res.status(200).json(result);
+        
+        res.status(200).json(responseConstructor({
+            success: true,
+            message: "Profile retrieved.", 
+            data: result
+        }));
     } catch (error) {
         console.error("Getting Profile failed:", error);
-        res.status(500).json({ 
+        
+        res.status(500).json(responseConstructor({
+            success: false,
             message: "Internal server error.",
             error: error.message
-        });
+        }));
     }
 };
 
 export const updateProfile = async (req, res) => {
-    const { uid, email } = req.user;
+    const user = req.user;
     const update = req.body;
 
     try {
-        const result = await usersService.updateProfileSvc(uid, email, update);
-        res.status(201).json({ 
-            message: "User profile successfully created and role set.",
-            user: result,
-        });
+        const result = await usersService.updateProfileSvc(user, update);
+        res.status(201).json(responseConstructor({ 
+            success: true,
+            message: "User profile successfully Updated.",
+            data: result,
+        }));
     } catch (error) {
         console.error("Updating Profile failed:", error);
-        res.status(500).json({ 
+        res.status(500).json(responseConstructor({ 
+            success: false,
             message: "Internal server error.",
             error: error.message
-        });
+        }));
     }
 };

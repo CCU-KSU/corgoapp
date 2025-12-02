@@ -37,3 +37,20 @@ export const transformCollectionToArray = (collection, sortKey = 'order') => {
 
     return transformedArray;
 };
+
+/**
+ * * @param {object} responseDetails - The response configuration object
+ * @param {boolean} responseDetails.success - Whether or not the call was successful
+ * @param {string} responseDetails.message - Short description of the response
+ * @param {string} [responseDetails.error=null] - Error message string if present
+ * @param {object} [responseDetails.data=null] - Data object if present
+ * @returns - Returns response object.
+ */
+export const responseConstructor = ({ success, message = "Success", error = null, data = null }) => {
+    return ({
+        success, // Shorthand for success: success
+        message,
+        error,
+        data
+    });
+};

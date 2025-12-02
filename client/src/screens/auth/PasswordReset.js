@@ -4,20 +4,20 @@ import { useAuth } from "../../contexts/AuthContext";
 import Form from "../../components/form/Form";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
-import Link from "../../components/button/Link";
+import ButtonLink from "../../components/button/ButtonLink";
 import Message from "../../components/text/Message";
 
-const PasswordReset = ({ setHeaderParams }) => { 
+const PasswordReset = ({ setViewParams }) => { 
     const { resetPassword } = useAuth();
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Recover Account",
-            showAccount: false,
-            backNav: "/login"
+            backURL: "/login",
+            showNavBar: false
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState({
@@ -60,7 +60,7 @@ const PasswordReset = ({ setHeaderParams }) => {
                         value={email}
                     />
                     {emailSent ? (
-                        <Link
+                        <ButtonLink
                             label={"Back to Sign-In"}
                             target={"/login"}
                             buttonLike

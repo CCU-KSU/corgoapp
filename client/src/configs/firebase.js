@@ -20,6 +20,11 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
-if (window.location.hostname === "localhost") {
-    connectAuthEmulator(auth, "http://localhost:9099");
+if (process.env.REACT_APP_ENVIRONMENT === "development") {
+    const currentHostname = window.location.hostname;
+    let emulatorHost = "localhost";
+    if (process.env.REACT_APP_NETWORK_IP && currentHostname !== "localhost") {
+        emulatorHost = process.env.REACT_APP_NETWORK_IP;
+    }
+    connectAuthEmulator(auth, `http://${emulatorHost}:9099`, { disableWarnings: true });
 }
