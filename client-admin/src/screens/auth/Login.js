@@ -7,17 +7,16 @@ import Button from "../../components/button/Button";
 
 import Message from "../../components/text/Message";
 
-const Login = ({ setHeaderParams }) => {
+const Login = ({ setViewParams }) => {
     const { login } = useAuth();
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Admin Panel Login",
-            showAccount: false,
-            backNav: ""
+            backURL: ""
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

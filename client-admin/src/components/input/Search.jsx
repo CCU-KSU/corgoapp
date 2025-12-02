@@ -2,7 +2,7 @@ import Icon_Search from "../../assets/icon/search.svg";
 import Icon_Clear from "../../assets/icon/xmark-small.svg";
 import ButtonIcon from "../button/ButtonIcon";
 
-const Search = ({ id=(`search_${crypto.randomUUID()}`), runQuery, placeholder="Search", onChange=(() => {}), value }) => {
+const Search = ({ id="a", runQuery, placeholder="Search", onChange=(() => {}), value }) => {
     const handleInputChange = (e) => {
         onChange(e.target.value); 
     };

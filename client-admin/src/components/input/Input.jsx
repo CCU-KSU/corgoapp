@@ -1,4 +1,4 @@
-const Input = ({ id=crypto.randomUUID(), type="text", placeholder="Text Field", isRequired=false, label, onChange=(() => {}), disabled=false, min, max, autoComplete, value }) => {
+const Input = ({ id="a", type="text", placeholder="Text Field", isRequired=false, label, onChange=(() => {}), disabled=false, min, max, autoComplete, value }) => {
     const handleInputChange = (e) => {
         onChange(e.target.value); 
     };

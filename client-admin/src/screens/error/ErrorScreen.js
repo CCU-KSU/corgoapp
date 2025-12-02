@@ -1,6 +1,6 @@
 import BodySub from "../../components/container/BodySub";
 
-import Link from "../../components/button/Link";
+import ButtonLink from "../../components/button/ButtonLink";
 
 const ErrorScreen = () => {
     return (
@@ -8,9 +8,10 @@ const ErrorScreen = () => {
             <BodySub>
                 <div className="center-piece">
                     <h1>Something went wrong!</h1>
-                    <Link
-                        label={"Go back"}
-                        target={"/"}
+                    <ButtonLink
+                        label="Home Page"
+                        target={"/catalog"}
+                        buttonLike
                     />
                 </div>
             </BodySub> 

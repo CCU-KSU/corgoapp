@@ -3,12 +3,15 @@ import { Routes, Route } from "react-router-dom";
 import Menu from "./manage/Menu";
 import Catalog from "./manage/Catalog";
 
-const Manage = ({ setHeaderParams }) => {
+import NotFound from "./error/NotFound";
+
+const Manage = ({ setViewParams }) => {
     return (
         <>
             <Routes>
-                <Route index element={<Menu setHeaderParams={setHeaderParams}/>}/>
-                <Route path="catalog/*" element={<Catalog setHeaderParams={setHeaderParams}/>}/>
+                <Route index element={<Menu setViewParams={setViewParams}/>}/>
+                <Route path="catalog/*" element={<Catalog setViewParams={setViewParams}/>}/>
+                <Route path="*" element={<NotFound setViewParams={setViewParams} />} />
             </Routes>
         </>
     );

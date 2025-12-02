@@ -11,12 +11,10 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticating, setIsAuthenticating] = useState(true)
 
     const login = (email, password) => {
-        // setIsAuthenticating(true);
         return signInWithEmailAndPassword(auth, email, password);
     }
 
     const logout = () => {
-        // setIsAuthenticating(true);
         return signOut(auth);
     }
 

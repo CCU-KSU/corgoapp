@@ -11,25 +11,26 @@ import Manage from "./screens/Manage";
 
 const App = () => {
 	const { currentUser, isAuthenticating } = useAuth()
-    const [headerParams, setHeaderParams] = useState({
+
+	const [viewParams, setViewParams] = useState({
+        showHeader: true,
         headerLabel: "",
-        showAccount: true,
-        backNav: "",
-        show: true
+        backURL: "",
+        showNavBar: true
     });
 
 	return (
 		<>
 			<LoadingGate isLoading={isAuthenticating}>
 				<div className="body-app">
-					{headerParams.show && <Header headerParams={headerParams} />}
+					{viewParams.showHeader && <Header viewParams={viewParams} />}
 					<div className="body-content">
 						<Routes>
 							<Route index element={<Navigate to="/manage" replace />} />
-							<Route path="/login" element={currentUser ? <Navigate to={"/manage"} /> : <Login  setHeaderParams={setHeaderParams}/>} />
+							<Route path="/login" element={currentUser ? <Navigate to={"/manage"} /> : <Login  setViewParams={setViewParams}/>} />
 							<Route path="/manage/*" element={
 								<WithPrivateRoute>
-									<Manage setHeaderParams={setHeaderParams}/>
+									<Manage setViewParams={setViewParams}/>
 								</WithPrivateRoute>
 							} />
 						</Routes>

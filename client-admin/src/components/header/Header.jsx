@@ -1,37 +1,20 @@
-import ButtonLink from "../button/ButtonLink";
-import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-import Icon_User from "../../assets/icon/user.svg";
-import Icon_Back from "../../assets/icon/chevron-left.svg"
+import Icon_Back from "../../assets/icon/arrow-shape-turn-left.svg"
 import ButtonIcon from "../button/ButtonIcon"
 
-const Header = ({ headerParams }) => {
+const Header = ({ viewParams }) => {
     const navigate = useNavigate();
-    const { currentUser } = useAuth();
     return (
         <>
             <div className="header">
-                {headerParams.backNav && (
+                {viewParams.backURL && (
                     <ButtonIcon
                         iconRef={Icon_Back}
-                        action={() => {navigate(headerParams.backNav)}}
+                        action={() => {navigate(viewParams.backURL)}}
                     />
                 )}
-                <div className="header-label">{headerParams.headerLabel}</div>
-                {headerParams.showAccount && (currentUser ? (
-                    <ButtonIcon
-                        iconRef={Icon_User}
-                        action={() => {navigate("/profile")}}
-                    />
-                ) : (
-                    <ButtonLink
-                        target={"/login"}
-                        buttonLike
-                        showIcon={false}
-                        label="Login"
-                    />
-                ))}
+                <h1 className="header-label">{viewParams.headerLabel}</h1>
             </div>
         </>
     );

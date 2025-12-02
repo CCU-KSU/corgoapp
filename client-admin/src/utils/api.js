@@ -1,24 +1,28 @@
 import { auth } from "../configs/firebase";
+import { signOut } from "firebase/auth";
 
 const getBaseUrl = () => {
-    const BACKEND_PORT_PATH = ":5000/api";
-    const currentHostname = window.location.hostname;
-    if (currentHostname === 'localhost' || currentHostname === '127.0.0.1') {
-        return process.env.REACT_APP_API_BASE_URL; 
+    if (process.env.REACT_APP_ENVIRONMENT === "development") {
+        const currentHostname = window.location.hostname;
+        let backendHost = "localhost";
+        if (process.env.REACT_APP_NETWORK_IP && currentHostname !== "localhost") {
+            backendHost = process.env.REACT_APP_NETWORK_IP;
+        }
+        return `http://${backendHost}:5000/api`;
     } else {
-        return `http://${currentHostname}${BACKEND_PORT_PATH}`;
+        return process.env.REACT_APP_API_BASE_URL;
     }
 }
 
 export const apiCall = async (endpoint, options = {}) => {
     const user = auth.currentUser;
-    const token = user && (await user.getIdToken());
+    const token = user ? await user.getIdToken() : null;
 
     const method = options.method || 'GET';
 
     const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers
     };
 
@@ -31,9 +35,20 @@ export const apiCall = async (endpoint, options = {}) => {
     };
 
     const BASE_API_URL = getBaseUrl();
+    
     const url = `${BASE_API_URL}${endpoint}`;
 
     const response = await fetch(url, payload);
+
+    if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+            console.warn("API call failed due to 401/403. Likely a revoked/invalid session. Forcing client logout.");
+            await signOut(auth);
+            throw new Error("Session Invalid: Token was rejected by the server.");
+        } else {
+            throw new Error(response.message || `API call failed with status ${response.status}`);
+        }
+    }
 
     const contentType = response.headers.get("content-type");
 

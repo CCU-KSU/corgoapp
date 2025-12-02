@@ -1,6 +1,6 @@
 import Select from "react-select"
 
-const InputMulti = ({ id=crypto.randomUUID(), placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[] }) => {
+const InputMulti = ({ id="a", placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[] }) => {
 
     const handleChange = (selected) => {
         onChange(selected.map(option => option.key));

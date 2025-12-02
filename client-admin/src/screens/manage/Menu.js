@@ -7,17 +7,18 @@ import Button from "../../components/button/Button";
 import SpacedItems from "../../components/container/SpacedItems";
 import LinkListBox from "../../components/container/LinkListBox";
 
-const Menu = ({ setHeaderParams }) => {
+const Menu = ({ setViewParams }) => {
     const { logout } = useAuth();
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
+            showHeader: true,
             headerLabel: "Main Menu",
             showAccount: false,
-            backNav: ""
+            backURL: ""
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     const handleLogout = async () => {
 		try {

@@ -3,17 +3,16 @@ import { apiCall } from "../../../utils/api";
 
 import Link from "../../../components/button/Link";
 
-const CatalogView = ({ setHeaderParams }) => {
+const CatalogView = ({ setViewParams }) => {
     const [catalogLoadStatus, setCatalogLoadStatus] = useState(true);
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Manage Catalog",
-            showAccount: false,
-            backNav: "/manage"
+            backURL: "/manage"
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     const refreshEntryList = async () => {};
 

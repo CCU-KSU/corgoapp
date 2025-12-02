@@ -13,20 +13,19 @@ import Message from "../../../components/text/Message";
 import BodySub from "../../../components/container/BodySub";
 import SplitView from "../../../components-admin/container/SplitView";
 
-const CatalogEdit = ({ setHeaderParams }) => {
+const CatalogEdit = ({ setViewParams }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const paramsObject = Object.fromEntries(searchParams.entries());
 
     const [editorPrepStatus, setEditingPrepStatus] = useState(true);
 
     useEffect(() => {
-        setHeaderParams(curr => ({
+        setViewParams(curr => ({
             ...curr,
             headerLabel: "Entry Editor",
-            showAccount: false,
-            backNav: "/manage/catalog"
+            backURL: "/manage/catalog"
         }));
-    }, [setHeaderParams]);
+    }, [setViewParams]);
 
     useEffect(() => {
         if (paramsObject.mode === "edit") {

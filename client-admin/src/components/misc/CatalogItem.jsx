@@ -27,7 +27,7 @@ const CatalogItem = ({ data }) => {
                     flexDirection: "column",
                     width: "3.5rem",
                 }}>
-                    <img src={Fallback_Icon} alt="" />
+                    <img src={data.iconRef? data.iconRef : Fallback_Icon} alt="" />
                 </div>
                 <div style={{
                     flex: "1",
