@@ -57,7 +57,7 @@ const App = () => {
                 {viewParams.showNavBar && <NavBar baseUrl="">
                     <NavBarItem iconRef={Icon_Nav_Catalog} navTo="catalog" />
                     <NavBarItem iconRef={Icon_Nav_Check_Mark} navTo="tasks" />
-                    {currentUser && <NavBarItem iconRef={Icon_Nav_Profile} navTo="profile" />}
+                    <NavBarItem iconRef={Icon_Nav_Profile} navTo="profile" />
                 </NavBar>}
             </div>
         </LoadingGate>

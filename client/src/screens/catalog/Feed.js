@@ -69,7 +69,7 @@ const Feed = ({ setViewParams }) => {
             <LoadingGate isLoading={initializing}>
                 <SpacedItems>
                     <InputMulti
-                        label={"Your Goals?"}
+                        label={"Start Here! What are your Goals?"}
                         options={goalTermOptions}
                         value={goalTerms}
                         onChange={setGoalTerms}
