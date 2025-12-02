@@ -1,4 +1,4 @@
-const InputTickBox = ({ id=crypto.randomUUID(), type="checkbox", isRequired=false, label, onChange=(() => {}), value }) => {
+const InputTickBox = ({ id="a", type="checkbox", isRequired=false, label, onChange=(() => {}), value }) => {
     const handleInputChange = (e) => {
         onChange(e.target.checked);
     };

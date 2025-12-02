@@ -1,6 +1,6 @@
 import Select from "react-select"
 
-const InputDropdown = ({ id=crypto.randomUUID(), placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value="" }) => {
+const InputDropdown = ({ id="a", placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value="" }) => {
 
     const handleChange = (selected) => {
         onChange(selected ? selected.key : null);

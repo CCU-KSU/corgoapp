@@ -1,17 +1,6 @@
 import Select from "react-select"
 
-const generateId = () => {
-    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-        return crypto.randomUUID();
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-};
-
-const InputMulti = ({ id=generateId(), placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[] }) => {
+const InputMulti = ({ id="a", placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[] }) => {
 
     const handleChange = (selected) => {
         onChange(selected.map(option => option.key));
