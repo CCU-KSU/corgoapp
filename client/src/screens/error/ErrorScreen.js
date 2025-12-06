@@ -8,6 +8,7 @@ const ErrorScreen = () => {
             <BodySub>
                 <div className="center-piece">
                     <h1>Something went wrong!</h1>
+                    <p>Refresh the page or press the button below.</p>
                     <ButtonLink
                         label="Home Page"
                         target={"/catalog"}

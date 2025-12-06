@@ -17,6 +17,7 @@ import Register from "./screens/auth/Register";
 import PasswordReset from "./screens/auth/PasswordReset";
 
 import Catalog from "./screens/Catalog";
+import Onboarding from "./screens/Onboarding";
 import Account from "./screens/Account";
 
 import TOU from "./screens/terms/TOU";
@@ -43,8 +44,12 @@ const App = () => {
                         <Route path="/register" element={currentUser ? <Navigate to={"/catalog"} /> : <Register  setViewParams={setViewParams}/>} />
                         <Route path="/reset" element={currentUser ? <Navigate to={"/catalog"} /> : <PasswordReset  setViewParams={setViewParams}/>} />
                         <Route path="/catalog/*" element={<Catalog setViewParams={setViewParams}/>} />
-                        
-                        <Route path="/profile/*" element={
+                        <Route path="/onboarding/*" element={
+                            <WithPrivateRoute>
+                                <Onboarding setViewParams={setViewParams}/>
+                            </WithPrivateRoute>
+                        } />
+                        <Route path="/account/*" element={
                             <WithPrivateRoute>
                                 <Account setViewParams={setViewParams}/>
                             </WithPrivateRoute>
@@ -54,10 +59,10 @@ const App = () => {
                         <Route path="*" element={<NotFound setViewParams={setViewParams} />} />
                     </Routes>
                 </div>
-                {viewParams.showNavBar && <NavBar baseUrl="">
+                {currentUser && viewParams.showNavBar && <NavBar baseUrl="">
                     <NavBarItem iconRef={Icon_Nav_Catalog} navTo="catalog" />
-                    <NavBarItem iconRef={Icon_Nav_Check_Mark} navTo="tasks" />
-                    <NavBarItem iconRef={Icon_Nav_Profile} navTo="profile" />
+                    <NavBarItem iconRef={Icon_Nav_Check_Mark} navTo="onboarding" />
+                    <NavBarItem iconRef={Icon_Nav_Profile} navTo="account" />
                 </NavBar>}
             </div>
         </LoadingGate>

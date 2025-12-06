@@ -3,12 +3,7 @@ import { responseConstructor } from "../utils/index.js";
 
 export const getCatalog = async (req, res) => {
     try {
-        let result;
-        if (req.query.index) {
-            result = await catalogService.getCatalogPagedSvc(req.query.index)
-        } else {
-            result = await catalogService.getCatalogSvc()
-        }
+        const result = await catalogService.getCatalogPagedSvc(req.query);
         
         res.status(200).json(responseConstructor({
             success: true,
@@ -59,9 +54,36 @@ export const createCatalogEntry = async (req, res) => {
 };
 
 export const updateCatalogEntry = async (req, res) => {
-    // 
+    try {
+        const newData = req.body;
+        const id = req.params.id;
+        const result = await catalogService.updateCatalogEntrySvc(id, newData);
+        res.status(200).json(responseConstructor({
+            success: true,
+            message: "Entry Updated"
+        }));
+    } catch (error) {
+        console.error("Error updating entry:", error);
+        res.status(500).json(responseConstructor({ 
+            message: "Internal server error.",
+            error: error.message
+        }));
+    }
 };
 
 export const deleteCatalogEntry = async (req, res) => {
-    // 
+    try {
+        const id = req.params.id;
+        const result = await catalogService.deleteCatalogEntrySvc(id);
+        res.status(200).json(responseConstructor({
+            success: true,
+            message: "Entry Deleted"
+        }));
+    } catch (error) {
+        console.error("Error deleting entry:", error);
+        res.status(500).json(responseConstructor({ 
+            message: "Internal server error.",
+            error: error.message
+        }));
+    }
 };

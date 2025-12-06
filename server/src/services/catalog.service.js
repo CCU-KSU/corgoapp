@@ -7,10 +7,18 @@ export const getCatalogSvc = async () => {
     return catalogRaw;
 };
 
-export const getCatalogPagedSvc = async (index) => {
-    const indexTimestamp = index ? parseInt(index) : null;    
+export const getCatalogPagedSvc = async (query) => {
+    const indexTimestamp = query.index ? parseInt(query.index) : null; 
+    
+    const goalsFilter = query.goals ? query.goals.split(',') : null;
 
-    const catalogPageRaw = await catalogDb.getCatalogPagedDb(indexTimestamp);
+    let catalogPageRaw;
+
+    if (goalsFilter && goalsFilter.length > 0) {
+        catalogPageRaw = await catalogDb.getCatalogRecommendationsPagedDb(goalsFilter, indexTimestamp);
+    } else {
+        catalogPageRaw = await catalogDb.getCatalogPagedDb(indexTimestamp);
+    }
 
     const nextIndexRaw = catalogPageRaw.length ? catalogPageRaw.at(-1).written : null;
     const nextIndex = nextIndexRaw ? nextIndexRaw.toString() : null;
@@ -44,10 +52,17 @@ export const createCatalogEntrySvc = async (entryData) => {
     await catalogDb.createCatalogEntryDb(trueEntryData);
 };
 
-export const updateCatalogEntrySvc = async () => {
-    // 
+export const updateCatalogEntrySvc = async (id, newData) => {
+    const timeNow = Date.now();
+    
+    const trueNewData = {
+        ...newData,
+        edited: timeNow
+    };
+
+    await catalogDb.updateCatalogEntryDb(id, trueNewData);
 };
 
-export const deleteCatalogEntrySvc = async () => {
-    // 
+export const deleteCatalogEntrySvc = async (id) => {
+    await catalogDb.deleteCatalogEntryDb(id); 
 };

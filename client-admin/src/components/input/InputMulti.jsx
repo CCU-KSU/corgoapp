@@ -1,6 +1,6 @@
 import Select from "react-select"
 
-const InputMulti = ({ id="a", placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[] }) => {
+const InputMulti = ({ id="a", placeholder="Make Selection", isRequired=false, label, onChange=(() => {}), options=[], value=[], isDisabled=false }) => {
 
     const handleChange = (selected) => {
         onChange(selected.map(option => option.key));
@@ -27,6 +27,7 @@ const InputMulti = ({ id="a", placeholder="Make Selection", isRequired=false, la
                         control: ({ outline, ...provided }) => provided // Removes baked in `outline` from the styling
                     }}
                     classNamePrefix={"input-field"}
+                    isDisabled={isDisabled}
                 />
             </div>
         </>

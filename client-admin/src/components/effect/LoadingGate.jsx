@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Anim_Spinner from "../../assets/anim/3-dots-scale.svg"
 
-const LoadingGate = ({ children, isLoading }) => {
+import ErrorScreen from "../../screens/error/ErrorScreen";
+
+const LoadingGate = ({ children, isLoading, isError=false }) => {
 
     const [isSpinnerVisible, setIsSpinnerVisible] = useState(isLoading);
 
@@ -21,6 +23,7 @@ const LoadingGate = ({ children, isLoading }) => {
         };
     }, [isLoading]);
 
+
     return (
         <>
             {isSpinnerVisible ? (
@@ -28,7 +31,7 @@ const LoadingGate = ({ children, isLoading }) => {
                     <img className="spinner" alt="" src={Anim_Spinner}/>
                 </div>
             ) : (
-                children
+                (isError ? (<ErrorScreen />) : (children))
             )}
         </>
     );

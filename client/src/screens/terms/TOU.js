@@ -6,17 +6,10 @@ import ReactMarkdown from "react-markdown";
 import Button from "../../components/button/Button";
 import LoadingGate from "../../components/effect/LoadingGate";
 
-const TOU = ({ setViewParams }) => {
+const TOU = ({ closeModal }) => {
 
     const [tou, setTou] = useState(null);
     const [touLoading, setTouLoading] = useState(true);
-
-    useEffect(() => {
-        setViewParams(curr => ({
-            ...curr,
-            show: false
-        }));
-    }, [setViewParams]);
 
     useEffect(() => {
         const getTou = async () => {
@@ -44,7 +37,7 @@ const TOU = ({ setViewParams }) => {
                     <div className="center-piece">
                         <Button
                             label="Go Back"
-                            action={() => {window.close()}}
+                            action={closeModal}
                             isSmall
                         />
                     </div>

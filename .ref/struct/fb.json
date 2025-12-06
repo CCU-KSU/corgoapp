@@ -1,0 +1,135 @@
+{
+    "collections": {
+        "users": {
+            "user_id_1": {
+                "name": "Bob",
+                "email": "bob2@gmail.com",
+                "goals": [
+                    "goal_id_1",
+                    "goal_id_2"
+                ],
+                "checklistProgressCollection": {
+                    "checklistId_1": {
+                        "progress": {
+                            "item_id_1": {
+                                "completed": true,
+                                "subItems": {
+                                    "sub_item_id_1": {
+                                        "completed": true
+                                    },
+                                    "sub_item_id_2": {
+                                        "completed": false
+                                    }
+                                }
+                            },
+                            "item_id_2": {
+                                "completed": false,
+                                "subItems": {}
+                            }
+                        }
+                    }
+                },
+                "devicePlatform": "platform_id_1",
+                "experienceLvl": "lvl_id_1",
+                "touAgreed": true,
+                "touAgreedDate": "2020-09-09",
+                "touAgreedRev": 1,
+                "role": "user"
+            }
+        },
+        "documents": {
+            "tou": {
+                "latestRev": 2,
+                "revisions": {
+                    "1": {
+                        "written": "2020-01-01",
+                        "content": "Terms of Use content v1..."
+                    },
+                    "2": {
+                        "written": "2021-01-01",
+                        "content": "Terms of Use content v2..."
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "master_goals": {
+                "goal_id_1": {
+                    "name": "Stay Connected"
+                },
+                "goal_id_2": {
+                    "name": "Manage Health"
+                }
+            },
+            "master_platforms": {
+                "platform_id_1": {
+                    "name": "iOS"
+                },
+                "platform_id_2": {
+                    "name": "Android"
+                }
+            },
+            "master_experience_level": {
+                "lvl_id_1": {
+                    "name": "Beginner"
+                },
+                "lvl_id_2": {
+                    "name": "Intermediate"
+                }
+            }
+        },
+        "catalog": {
+            "app_id_1": {
+                "name": "WatsApp",
+                "about": "Private messaging across the world",
+                "about-long": "A popular, free, cross-platform instant messaging app that allows users to send text messages, photos, videos, documents, and voice messages using a phone's internet connection instead of a mobile carrier's service",
+                "iconRef": "https://app.logo.com/icon1",
+                "relatedGoals": [
+                    "goal_id_1"
+                ],
+                "installLink": {
+                    "platform_id_1": {
+                        "link": "platform_id_1_link"
+                    },
+                    "platform_id_2": {
+                        "link": "platform_id_2_link"
+                    }
+                },
+                "written": "newDate",
+                "edited": "newDate"
+            }
+        },
+        "checklists": {
+            "checklist_id_1": {
+                "name": "Getting Started Checklist",
+                "items": {
+                    "item_id_1": {
+                        "label": "Set up your profile",
+                        "description": "Add a profile picture and bio to let others know more about you.",
+                        "order": 1,
+                        "subItems": {
+                            "sub_item_id_1": {
+                                "label": "Add profile picture",
+                                "description": "Choose a photo that represents you.",
+                                "order": 1,
+                                "subItems": {}
+                            },
+                            "sub_item_id_2": {
+                                "label": "Write a bio",
+                                "description": "Tell others a bit about yourself.",
+                                "order": 2,
+                                "subItems": {}
+                            }
+                        }
+                    },
+                    "item_id_2": {
+                        "label": "Connect with friends",
+                        "description": "Find and add friends to start connecting.",
+                        "order": 2,
+                        "subItems": {}
+                    }
+                }
+            }
+        }
+    }
+}

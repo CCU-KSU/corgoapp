@@ -33,8 +33,9 @@ const Menu = ({ setViewParams }) => {
             <SpacedItems>
                 <LinkListBox>
                     <A to={"catalog"}>{"Manage Catalog"}</A>
-                    <A to={"metadata"}>{"Manage Metadata"}</A>
-                    <A to={"guides"}>{"Manage Quick Guides"}</A>
+                    {/* <A to={"metadata"}>{"Manage Metadata"}</A> */}
+                    {/* <A to={"checklists"}>{"Manage Checklists"}</A> */}
+                    <A to={"docs"}>{"Manage Documents"}</A>
                 </LinkListBox>
                 <Button
                     label="Logout"

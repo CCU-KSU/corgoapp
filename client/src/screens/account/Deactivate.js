@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 
 import Button from "../../components/button/Button";
@@ -9,21 +9,12 @@ import Form from "../../components/form/Form";
 
 import Message from "../../components/text/Message";
 
-const Deactivate = ({ setViewParams }) => {
+const Deactivate = ({ closeModal }) => {
     const { currentUser, deleteUserAccount, reauthenticateUser } = useAuth();
     
     const [acknowledgment, setAcknowledgment] = useState(false)
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState({ type: "", message: "" });
-
-    useEffect(() => {
-        setViewParams(curr => ({
-            ...curr,
-            headerLabel: "Deactivate",
-            backURL: "/profile",
-            showNavBar: false
-        }));
-    }, [setViewParams]);
     
     const deactivateAccount = async (e) => {
         e.preventDefault();
@@ -40,6 +31,7 @@ const Deactivate = ({ setViewParams }) => {
     return (
         <>
             <Form onSubmit={deactivateAccount}>
+                <Button label="Cancel" action={closeModal} isSmall/>
                 <Message type={message.type} message={message.message} isCentered/>
                 <Message type="warning" message="Deactivating your account will remove any data associated with it. You will also no longer be able to sign-in with it's associated credentials." isCentered/>
                 <InputTickBox

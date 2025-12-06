@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { apiCall } from "../../utils/api";
-import { useNavigate } from "react-router-dom";
 
 import Input from "../../components/input/Input";
 import InputDropdown from "../../components/input/InputDropdown";
-import InputMulti from "../../components/input/InputMulti";
 import Button from "../../components/button/Button";
 
 import Form from "../../components/form/Form";
@@ -13,13 +11,13 @@ import Message from "../../components/text/Message";
 
 import LoadingGate from "../../components/effect/LoadingGate";
 
-const EditProfile = ({ setViewParams }) => {
-    const navigate = useNavigate();
+const EditProfile = ({ closeModal }) => {
 
     const [profile, setProfile] = useState({});
     const [editingPrep, setEditingPrep] = useState(true);
     const [deviceOptions, setDeviceOptions] = useState([]);
     const [experienceOptions, setExperienceOptions] = useState([]);
+    const [error, setError] = useState(false);
 
     const [message, setMessage] = useState({
         type: "success",
@@ -31,15 +29,6 @@ const EditProfile = ({ setViewParams }) => {
     const [experience, setExperience] = useState("");
 
     const [canSubmit, setCanSubmit] = useState(false);
-
-    useEffect(() => {
-        setViewParams(curr => ({
-            ...curr,
-            headerLabel: "Edit Profile",
-            backURL: "/profile",
-            showNavBar: false
-        }));
-    }, [setViewParams]);
 
     useEffect(() => {
         if (firstName || device || experience) {
@@ -61,6 +50,7 @@ const EditProfile = ({ setViewParams }) => {
                 setDeviceOptions(resPlatforms.data);
             } catch (error) {
                 console.error("User and Metadata fetching failed:", error);
+                setError(true);
             } finally {
                 setEditingPrep(false);
             }
@@ -90,7 +80,7 @@ const EditProfile = ({ setViewParams }) => {
 
             if (Object.keys(updatedProfileData).length === 0) {
                 console.log("No changes detected. Update skipped.");
-                navigate("/profile");
+                closeModal();
                 return;
             }
 
@@ -98,19 +88,20 @@ const EditProfile = ({ setViewParams }) => {
                 method: "PATCH",
                 body: updatedProfileData
             });
-            
+            closeModal();
         } catch (error) {
             console.error("Profile update failed:", error);
             setMessage({ type: "error", message: "Failed to update profile. Please try again."});
         } finally {
-            navigate("/profile");
+            setEditingPrep(false);
         }
     };
 
     return (
         <>
-            <LoadingGate isLoading={editingPrep}>
+            <LoadingGate isLoading={editingPrep} isError={error}>
                 <Form onSubmit={handleProfileUpdate}>
+                    <Button label="Cancel" action={closeModal} isSmall/>
                     <Message type={message.type} message={message.message} isCentered />
                     <Message type={"notice"} message={"At least ONE field need to be filled!"} isCentered />
                     <Input
@@ -120,7 +111,7 @@ const EditProfile = ({ setViewParams }) => {
                         id="fname"
                         type="text"
                         onChange={setFirstName}
-                        placeholder={`(current) ${profile.firstName}`}
+                        placeholder={`(current) ${profile.firstName || "Not Set"}`}
                     />
                     <InputDropdown
                         label={"New Platform"}
@@ -128,7 +119,7 @@ const EditProfile = ({ setViewParams }) => {
                         id="platform"
                         onChange={setDevice}
                         options={deviceOptions}
-                        placeholder={`(current) ${profile.devicePlatform}`}
+                        placeholder={`(current) ${profile.devicePlatform || "Not Set"}`}
                     />
                     <InputDropdown
                         label={"New Experience Level"}
@@ -136,7 +127,7 @@ const EditProfile = ({ setViewParams }) => {
                         id="experience"
                         onChange={setExperience}
                         options={experienceOptions}
-                        placeholder={`(current) ${profile.experienceLvl}`}
+                        placeholder={`(current) ${profile.experienceLvl || "Not Set"}`}
                     />
                     <Button
                         type="submit"

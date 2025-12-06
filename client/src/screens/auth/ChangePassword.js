@@ -15,7 +15,7 @@ const PASSWORD_REQUIREMENTS = {
     hasSpecialChar: /(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])/
 };
 
-const ChangePassword = ({ setViewParams }) => {
+const ChangePassword = ({ closeModal }) => {
 
     const { currentUser, updateUserPassword, reauthenticateUser } = useAuth();
 
@@ -28,15 +28,6 @@ const ChangePassword = ({ setViewParams }) => {
     });
 
     const [canSubmit, setCanSubmit] = useState(false);
-
-    useEffect(() => {
-        setViewParams(curr => ({
-            ...curr,
-            headerLabel: "Change Password",
-            backURL: "/profile",
-            showNavBar: false
-        }));
-    }, [setViewParams]);
 
     useEffect(() => {
         if (currentPassword || newPassword) {
@@ -75,7 +66,8 @@ const ChangePassword = ({ setViewParams }) => {
 
             setCurrentPassword("");
             setNewPassword("");
-            setMessage({ type: "success", message: "Password Updated Successfully!"}); 
+            setMessage({ type: "success", message: "Password Updated Successfully!"});
+            closeModal();
         } catch (error) {
             console.error("Password update failed:", error);
             let errorMessage = "Failed to update password. Please try again.";
@@ -93,6 +85,7 @@ const ChangePassword = ({ setViewParams }) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
+                <Button label="Cancel" action={closeModal} isSmall/>
                 <Message type={message.type} message={message.message} isCentered/>
                 <Input
                     label={"Current Password"}

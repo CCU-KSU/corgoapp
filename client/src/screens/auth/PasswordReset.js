@@ -13,7 +13,7 @@ const PasswordReset = ({ setViewParams }) => {
     useEffect(() => {
         setViewParams(curr => ({
             ...curr,
-            headerLabel: "Recover Account",
+            headerLabel: "Password Reset",
             backURL: "/login",
             showNavBar: false
         }));
@@ -46,7 +46,6 @@ const PasswordReset = ({ setViewParams }) => {
     return (
         <>
             <div className="center-piece">
-                <h1>Password Reset</h1>
                 <Form id={"passwordReset"} onSubmit={handleSubmit}>
                     <Message type={message.type} message={message.message} isCentered />
                     <Message type={message2.type} message={message2.message} isCentered />

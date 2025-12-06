@@ -252,6 +252,32 @@ html, body, #root {
     height: 75%;
 }
 
+.button-bunch {
+    display: flex;
+    flex-direction: column;
+    padding: 0rem 1rem;
+    outline: solid 2px black;
+    border-radius: 0.75rem;
+    width: 100%;
+    max-width: 18rem;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.button-bunch > button {
+    font-size: large;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    font-weight: bold;
+    padding: 0.5rem 0;
+    border-radius: 0;
+}
+
+.button-bunch > button:not(:last-child) {
+    border-bottom: solid 2px black;
+}
+
 /* Text */
 .text-notice {
     margin: 0%;
@@ -403,7 +429,7 @@ html, body, #root {
 
 .header-label {
     flex: 1;
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: bolder;
 }
 

@@ -3,25 +3,21 @@ import { db } from "../configs/firebase.js";
 const CATALOG_COLLECTIONS = "catalog";
 
 /**
- * @typedef {object} ChecklistItem
- * @property {number} order - The order of the checklist item.
- * @property {string} label - The instruction or label for the checklist item.
- * @property {string} details - Additional details, such as a deep link reference.
- */
-
-/**
  * @typedef {object} CatalogEntryData
  * @property {string} name - The display name of the catalog entry (e.g., "WatsApp").
  * @property {string} about - A short, one-line description.
  * @property {string} aboutBig - A detailed description.
  * @property {string} iconRef - A URL reference to the entry's icon.
  * @property {string[]} relatedGoals - A list of goal IDs related to this entry.
- * @property {Object.<string, ChecklistItem>} checklistCollection - A map of checklist item IDs to their data.
  */
 
+/**
+ * Fetches the entire catalog from the database.
+ * @returns {Promise<CatalogEntryData[]>} A promise that resolves with an array of catalog entries.
+ */
 export const getCatalogDb = async () => {
     try {
-        const catalogSnapshot = await db.collection(CATALOG_COLLECTIONS).select("name", "about", "iconRef").get();
+        const catalogSnapshot = await db.collection(CATALOG_COLLECTIONS).select("name", "about", "iconRef").orderBy("name").get();
 
         const catalog = catalogSnapshot.docs.map(doc => ({
             id: doc.id,
@@ -41,7 +37,7 @@ export const getCatalogDb = async () => {
  */
 export const getCatalogPagedDb = async (index) => {
 
-    const pageSize = 3;
+    const pageSize = 5;
 
     try {
         let catalogPageQuery = db.collection(CATALOG_COLLECTIONS).select("name", "about", "iconRef", "written").orderBy("written", "desc");        
@@ -61,6 +57,35 @@ export const getCatalogPagedDb = async (index) => {
     } catch (error) {
         console.error("Error fetching catalog:", error);
         throw new Error("Failed to fetch catalog.");
+    }
+};
+
+/**
+ * Fetches a paged list of catalog entries matching any of the provided goal IDs.
+ * @param {string[]} goalIds - Array of goal IDs to match.
+ * @param {any} startAfter - Paging cursor (optional, usually a Firestore document snapshot or field value).
+ * @returns {Promise<CatalogEntryData[]>} Paged catalog recommendations.
+ */
+export const getCatalogRecommendationsPagedDb = async (goalIds, index) => {
+    const pageSize = 5;
+    try {
+        let query = db.collection(CATALOG_COLLECTIONS)
+            .where('relatedGoals', 'array-contains-any', goalIds)
+            .orderBy('written', 'desc');
+
+        if (index) {
+            query = query.startAfter(index);
+        }
+
+        const snapshot = await query.limit(pageSize).get();
+        const recommendations = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        return recommendations;
+    } catch (error) {
+        console.error('Error fetching recommendations:', error);
+        throw new Error('Failed to fetch recommendations.');
     }
 };
 

@@ -57,7 +57,15 @@ export const cleanupUserDataOnDelete = functions.auth.user().onDelete(async (use
     try {
         const profileRef = db.collection('users').doc(uid);
         await profileRef.delete();
-        console.log(`Successfully deleted main profile document for user ${uid}.`);
+        // Delete all nested collections and their documents
+        const collections = await profileRef.listCollections();
+        for (const collectionRef of collections) {
+            const docs = await collectionRef.listDocuments();
+            for (const docRef of docs) {
+                await docRef.delete();
+            }
+        }
+        console.log(`Successfully deleted main profile document and nested collections for user ${uid}.`);
         return { success: true };
     } catch (error) {
         console.error(`ERROR cleaning up data for user ${uid}:`, error);

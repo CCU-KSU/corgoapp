@@ -11,7 +11,7 @@ import Message from "../../components/text/Message";
 
 import LoadingGate from "../../components/effect/LoadingGate";
 
-const EditProfile = ({ setViewParams }) => {
+const ChangeEmail = ({ closeModal }) => {
     const navigate = useNavigate();
 
     const [profile, setProfile] = useState({});
@@ -25,15 +25,6 @@ const EditProfile = ({ setViewParams }) => {
     const [email, setEmail] = useState("");
 
     const [canSubmit, setCanSubmit] = useState(false);
-
-    useEffect(() => {
-        setViewParams(curr => ({
-            ...curr,
-            headerLabel: "Email Address",
-            backURL: "/profile",
-            showNavBar: false
-        }));
-    }, [setViewParams]);
 
     useEffect(() => {
         if (email) {
@@ -86,6 +77,7 @@ const EditProfile = ({ setViewParams }) => {
             setMessage({ type: "error", message: "Failed to update profile. Please try again."});
         } finally {
             navigate("/profile");
+            closeModal();
         }
     };
 
@@ -93,6 +85,7 @@ const EditProfile = ({ setViewParams }) => {
         <>
             <LoadingGate isLoading={editingPrep}>
                 <Form onSubmit={handleProfileUpdate}>
+                    <Button label="Cancel" action={closeModal} isSmall/>
                     <Message type={message.type} message={message.message} isCentered />
                     <Message type={"notice"} message={"To update the email address on file, enter a new one below then press submit."} isCentered />
                     <Input
@@ -115,4 +108,4 @@ const EditProfile = ({ setViewParams }) => {
     );
 }
  
-export default EditProfile;
+export default ChangeEmail;

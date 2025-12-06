@@ -14,6 +14,20 @@ const getBaseUrl = () => {
     }
 }
 
+/**
+ * @typedef {Object} ApiCallOptions
+ * @property {string} [method] - HTTP method (GET, POST, etc.)
+ * @property {Object} [headers] - Additional headers
+ * @property {Object} [body] - Request body for POST/PUT requests
+ */
+
+/**
+ * Makes an authenticated API call to the backend.
+ * @param {string} endpoint - API endpoint (e.g., "/users/profile")
+ * @param {ApiCallOptions} options - Options for the API call
+ * @returns {Promise<Object>} - Parsed JSON response
+ */
+
 export const apiCall = async (endpoint, options = {}) => {
     const user = auth.currentUser;
     const token = user ? await user.getIdToken() : null;

@@ -66,3 +66,55 @@ export const updateProfileDb = async (uid, email, updatedProfileData) => {
         throw new Error("Failed to update user profile in database.");
     }
 };
+
+/**
+ * Updates the status of a checklist item for a user.
+ * @param {string} uid - The Firebase User ID (UID).
+ * @param {string} checklistId - The ID of the checklist.
+ * @param {string} itemPath - The path to the specific checklist item.
+ * @param {boolean} status - The new status of the checklist item.
+ */
+
+export const updateChecklistItemStatusDb = async (uid, checklistId, updateData) => {
+    const progressRef = db
+        .collection(USERS_COLLECTION)
+        .doc(uid)
+        .collection("checklistProgress")
+        .doc(checklistId);
+
+    try {
+        await progressRef.set(updateData, { merge: true });
+    } catch (error) {
+        console.error(`Error updating checklist item status in DB for user ${uid}:`, error);
+        throw new Error("Failed to update checklist item status in database.");
+    }
+};
+
+/**
+ * Retrieves the progress document for a specific checklist for a user.
+ * @param {string} uid - The Firebase User ID (UID).
+ * @param {string} checklistId - The ID of the checklist (e.g., "onboarding").
+ * @returns {Promise<object | null>} The checklist progress data (Map), or null if the document doesn't exist.
+ */
+export const getChecklistProgressDb = async (uid, checklistId) => {
+    const progressRef = db
+        .collection(USERS_COLLECTION)
+        .doc(uid)
+        .collection("checklistProgress")
+        .doc(checklistId);
+
+    try {
+        const docSnapshot = await progressRef.get();
+        
+        if (!docSnapshot.exists) {
+            return {};
+        }
+
+        // Returns the data object, which contains the nested 'progress' Map.
+        return docSnapshot.data();
+
+    } catch (error) {
+        console.error(`Error retrieving checklist progress for user ${uid}:`, error);
+        throw new Error("Failed to retrieve checklist progress from database.");
+    }
+};

@@ -1,16 +1,12 @@
-import Fallback_Icon from '../../assets/icon/placeholder.svg';
-import { useNavigate } from 'react-router-dom';
+import Fallback_Icon from "../../assets/icon/placeholder.svg";
+import { Link } from "react-router-dom";
 
-const CatalogItem = ({ data }) => {
-    const navigate = useNavigate();
-    
-    const handleClick = () => {
-        navigate(`/catalog/${data.id}`);
-    };
-
+const CatalogItem = ({ data }) => {    
     return (
         <>
-            <div style={{
+            <Link to={`/catalog/${data.id}`} style={{
+                textDecoration: "none",
+                color: "inherit",
                 display: "flex",
                 flexDirection: "row",
                 gap: "1rem",
@@ -21,7 +17,7 @@ const CatalogItem = ({ data }) => {
                 maxWidth: "18rem",
                 boxSizing: "border-box",
                 cursor: "pointer"
-            }} onClick={handleClick}>
+            }} >
                 <div style={{
                     display: "flex",
                     flexDirection: "column",
@@ -42,7 +38,7 @@ const CatalogItem = ({ data }) => {
                         {data.about}
                     </div>
                 </div>
-            </div>
+            </Link>
         </>
     );
 }

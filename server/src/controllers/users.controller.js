@@ -79,3 +79,41 @@ export const updateProfile = async (req, res) => {
         }));
     }
 };
+
+export const updateChecklistItemStatus = async (req, res) => {
+    const { uid } = req.user;
+    const { checklistId, itemPath, status } = req.body;
+    try {
+        await usersService.updateChecklistItemStatusSvc(uid, checklistId, itemPath, status);
+        res.status(200).json(responseConstructor({
+            success: true,
+            message: "Checklist item status updated successfully."
+        }));
+    } catch (error) {
+        console.error("Error updating checklist item status:", error);
+        res.status(500).json(responseConstructor({
+            success: false,
+            message: "Internal server error.",
+            error: error.message
+        }));
+    }
+};
+
+export const getChecklistProgress = async (req, res) => {
+    const { uid } = req.user;
+    const { checklistId } = req.params;
+    try {
+        const progressData = await usersService.getChecklistProgressSvc(uid, checklistId);
+        res.status(200).json(responseConstructor({
+            success: true,
+            data: progressData
+        }));
+    } catch (error) {
+        console.error("Error retrieving checklist progress:", error);
+        res.status(500).json(responseConstructor({
+            success: false,
+            message: "Internal server error.",
+            error: error.message
+        }));
+    }
+};

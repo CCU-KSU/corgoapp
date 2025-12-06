@@ -10,7 +10,6 @@ export const createProfileSvc = async (uid, email, profileInput) => {
         email,
         firstName: profileInput.firstName,
         goals: [], 
-        checklistProgressCollection: {} || '', 
         devicePlatform: null,
         experienceLvl: null,
         touAgreed: true,
@@ -61,7 +60,7 @@ export const updateProfileSvc = async (user, updatedProfileData) => {
         return await getUserProfileSvc(uid); 
     }
 
-    await usersDb.updateProfileDb(uid, email, newUpdateProfileData);
+    await usersDb.updateProfileDb(uid, email, newUpdateProfileData);    
 
     const originalEmail = email
 
@@ -83,4 +82,43 @@ export const updateProfileSvc = async (user, updatedProfileData) => {
     return getUserProfileSvc(uid);
 };
 
+export const updateChecklistItemStatusSvc = async (uid, checklistId, itemPath, status) => {
 
+    console.log("Updating checklist item status:", { uid, checklistId, itemPath, status });
+    
+    
+    if (!uid || !checklistId || !itemPath || typeof status !== 'boolean') {
+        throw new Error("Invalid parameters provided for updating checklist item status.");
+    }
+
+    const pathSegments = itemPath.split('.').filter(Boolean);
+
+    const nested = {};
+    let cursor = nested;
+
+    for (let i = 0; i < pathSegments.length; i++) {
+        const seg = pathSegments[i];
+        const isLast = i === pathSegments.length - 1;
+
+        if (isLast) {
+            cursor[seg] = { completed: status };
+        } else {
+            // ensure an intermediate node exists with a subItems map
+            cursor[seg] = { completed: false, subItems: {} };
+            cursor = cursor[seg].subItems;
+        }
+    }
+
+    const updateData = { progress: nested };
+
+    await usersDb.updateChecklistItemStatusDb(uid, checklistId, updateData);
+};
+
+export const getChecklistProgressSvc = async (uid, checklistId) => {
+    if (!uid || !checklistId) {
+        throw new Error("Invalid parameters provided for fetching checklist progress.");
+    }
+    
+    const progressData = await usersDb.getChecklistProgressDb(uid, checklistId);
+    return progressData;
+}
