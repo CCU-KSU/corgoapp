@@ -101,7 +101,7 @@ const CatalogEdit = ({ setViewParams }) => {
             loadBlank();
         }
         fetchMetadataOptions();
-    }, []);
+    }, [paramsObject.mode, paramsObject.id]);
 
     const loadBlank = () => {
         console.log("Blank Loaded");

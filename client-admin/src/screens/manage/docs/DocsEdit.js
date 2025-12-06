@@ -5,17 +5,13 @@ import { useSearchParams } from "react-router-dom";
 
 import Input from "../../../components/input/Input";
 import InputBox from "../../../components/input/InputBox";
-import InputDropdown from "../../../components/input/InputDropdown";
-import InputMulti from "../../../components/input/InputMulti";
 import Button from "../../../components/button/Button";
 import ButtonIcon from "../../../components/button/ButtonIcon";
-import ButtonLink from "../../../components/button/ButtonLink";
 
 import Form from "../../../components/form/Form";
 import Message from "../../../components/text/Message";
 
 import LoadingGate from "../../../components/effect/LoadingGate";
-import BodySub from "../../../components/container/BodySub";
 import SplitView from "../../../components-admin/container/SplitView";
 
 import Trash_Icon from "../../../assets/icon/trash.svg";
@@ -74,7 +70,7 @@ const DocsEdit = ({ setViewParams }) => {
             setEditingPrepStatus(false);
         }
         
-    }, []);
+    }, [paramsObject.mode, paramsObject.id]);
 
     const loadBlank = () => {
         console.log("Blank Loaded");

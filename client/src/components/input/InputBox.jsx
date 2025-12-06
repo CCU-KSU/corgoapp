@@ -1,4 +1,4 @@
-const InputBox = ({ id=id="a", placeholder="Text Box Field", isRequired=false, label, onChange=(() => {}), value, isMono=false }) => {
+const InputBox = ({ id="a", placeholder="Text Box Field", isRequired=false, label, onChange=(() => {}), value, isMono=false }) => {
     const handleInputChange = (e) => {
         onChange(e.target.value); 
     };

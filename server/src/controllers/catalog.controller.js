@@ -3,7 +3,12 @@ import { responseConstructor } from "../utils/index.js";
 
 export const getCatalog = async (req, res) => {
     try {
-        const result = await catalogService.getCatalogPagedSvc(req.query);
+        let result;
+        if (Object.keys(req.query).length !== 0) {
+            result = await catalogService.getCatalogPagedSvc(req.query);
+        } else {
+            result = await catalogService.getCatalogSvc();
+        }
         
         res.status(200).json(responseConstructor({
             success: true,
