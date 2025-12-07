@@ -91,12 +91,14 @@ const Feed = ({ setViewParams }) => {
     const saveGoalTerms = async (terms) => {
         setInitializing(true);
         try {
-            await apiCall("/users/profile-update", {
-                method: "PATCH",
-                body: {
-                    goals: terms
-                }
-            });
+            if (currentUser) {
+                await apiCall("/users/profile-update", {
+                    method: "PATCH",
+                    body: {
+                        goals: terms
+                    }
+                });
+            }
             // Reload catalog based on new goals
             const resCatalog = await apiCall(`/catalog?index=${Date.now()}&goals=${terms.join(",")}`);
             setPageData({
