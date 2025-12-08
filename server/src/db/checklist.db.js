@@ -14,6 +14,23 @@ const CHECKLIST_COLLECTION = "checklist";
  * @property {Object.<string, ChecklistItem>} items - A map of checklist item IDs to their data.
  */
 
+export const getAllChecklistsDb = async () => {
+    try {
+        const snapshot = await db.collection(CHECKLIST_COLLECTION).get();
+        const checklists = [];
+        snapshot.forEach(doc => {
+            checklists.push({
+                id: doc.id,
+                name: doc.data().name || null
+            });
+        });
+        return checklists;
+    } catch (error) {
+        console.error("Error retrieving all checklists from DB:", error);
+        throw new Error("Failed to retrieve checklists.");
+    } 
+};
+
 /**
  * Fetches the checklist data for a given checklist ID.
  * @param {string} checklistId - The ID of the checklist to fetch.
@@ -39,8 +56,12 @@ export const getChecklistDb = async (checklistId) => {
  * @returns {Promise<void>} A promise that resolves when the update is complete.
  */
 export const updateChecklistDb = async (checklistId, updatedData) => {
+    const checklistRef = db.collection(CHECKLIST_COLLECTION).doc(checklistId);
     try {
-        await db.collection(CHECKLIST_COLLECTION).doc(checklistId).update(updatedData);
+        await checklistRef.update({
+            items: updatedData,
+            updatedAt: new Date()
+        });
     } catch (error) {
         console.error("Error updating checklist:", error);
         throw new Error("Failed to update checklist.");

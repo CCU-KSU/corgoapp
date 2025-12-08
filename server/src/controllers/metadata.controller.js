@@ -1,16 +1,25 @@
+import e from "express";
 import { metadataService } from "../services/index.js";
 import { responseConstructor } from "../utils/index.js";
 
-export const getGoals = async (req, res) => {
+export const getMetadataSet = async (req, res) => {
+    const id = req.params.id;
+    const asArray = req.query.asArray === 'true';
+    const sortBy = req.query.sortBy || 'order';
+    const desc = req.query.desc === 'true';
+
+    console.log(`getMetadataSet called with id: ${id}, asArray: ${asArray}, sortBy: ${sortBy}, desc: ${desc}`);
+    
+
     try {
-        const data = await metadataService.getGoalsSvc();
+        const data = await metadataService.getMetadataSetSvc(id, asArray, sortBy, desc);
         res.status(200).json(responseConstructor({
             success: true,
             message: "Success",
             data: data
         }));
     } catch (error) {
-        console.error("Getting Goals failed:", error);
+        console.error("Getting Metadata Set failed:", error);
         res.status(500).json(responseConstructor({ 
             message: "Internal server error.",
             error: error.message
@@ -18,35 +27,36 @@ export const getGoals = async (req, res) => {
     }
 };
 
-export const getPlatforms = async (req, res) => {
+export const getAllMetadataSets = async (req, res) => {
     try {
-        const data = await metadataService.getPlatformsSvc();
+        const data = await metadataService.getAllMetadataSetsSvc();
         res.status(200).json(responseConstructor({
             success: true,
             message: "Success",
             data: data
         }));
     } catch (error) {
-        console.error("Getting Platforms failed:", error);
-        res.status(500).json(responseConstructor({ 
+        console.error("Getting All Metadata Sets failed:", error);
+        res.status(500).json(responseConstructor({
             message: "Internal server error.",
             error: error.message
         }));
     }
 };
 
+export const updateMetadataSet = async (req, res) => {
+    const id = req.params.id;
+    const setData = req.body.setData;
 
-export const getExperiences = async (req, res) => {
     try {
-        const data = await metadataService.getExperiencesSvc();
+        await metadataService.updateMetadataSetSvc(id, setData);
         res.status(200).json(responseConstructor({
             success: true,
-            message: "Success",
-            data: data
+            message: "Metadata set updated successfully."
         }));
     } catch (error) {
-        console.error("Getting Platforms failed:", error);
-        res.status(500).json(responseConstructor({ 
+        console.error("Updating Metadata Set failed:", error);
+        res.status(500).json(responseConstructor({
             message: "Internal server error.",
             error: error.message
         }));

@@ -45,15 +45,15 @@ const ArticlePage = ({ setViewParams }) => {
                     navigate("/not-found");
                     return;
                 }
-                const resGoals = await apiCall("/metadata/goals");
-                const resPlatforms = await apiCall("/metadata/platforms");
+                const resGoals = await apiCall("/metadata/sets/goals?asArray=true&sortBy=pos&desc=false");
+                const resPlatforms = await apiCall("/metadata/sets/platforms?asArray=true&sortBy=label&desc=false");
                 const goalsMap = {};
-                resGoals.data.forEach(goal => {
+                resGoals.data.setData.forEach(goal => {
                     goalsMap[goal.key] = goal.label;
                 });
                 
                 setContent(resContent.data);
-                setPlatforms(resPlatforms.data);
+                setPlatforms(resPlatforms.data.setData);
                 setTags(goalsMap);
                 
             } catch (error) {

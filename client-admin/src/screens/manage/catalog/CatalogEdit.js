@@ -72,10 +72,10 @@ const CatalogEdit = ({ setViewParams }) => {
         const fetchMetadataOptions = async () => {
             try {
                 setEditingPrepStatus(true);
-                const resGoals = await apiCall("/metadata/goals");
-                const resPlatforms = await apiCall("/metadata/platforms");
-                setGoalOptions(resGoals.data);
-                setPlatformOptions(resPlatforms.data);
+                const resGoals = await apiCall("/metadata/sets/goals?asArray=true&sortBy=pos&desc=false");
+                const resPlatforms = await apiCall("/metadata/sets/platforms?asArray=true&sortBy=pos&desc=false");
+                setGoalOptions(resGoals.data.setData);
+                setPlatformOptions(resPlatforms.data.setData);
             } catch (error) {
                 console.error("Error fetching metadata options:", error);
             } finally {
@@ -271,7 +271,7 @@ const CatalogEdit = ({ setViewParams }) => {
                             <SpacedItems direction="row">
                                 <InputDropdown
                                     id="installPlatform"
-                                    label="Install Platform"
+                                    label="Platform"
                                     options={platformOptions}
                                     value={selectedPlatform}
                                     onChange={(val) => {

@@ -6,7 +6,7 @@
     /* width: fit-content !important; */
 }
 
-.input {
+.split-view .input {
     max-width: none !important;
     flex-shrink: 1 !important;
 }
@@ -50,4 +50,9 @@
 .split-view > .right-pane {
     flex: 2;
     max-width: 60rem;
+}
+
+.spaced-items .spaced-items, .spaced-items .form {
+    justify-content: unset !important;
+    align-items: unset !important;
 }

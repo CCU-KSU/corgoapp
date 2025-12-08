@@ -3,6 +3,7 @@ import { apiCall } from "../../utils/api";
 
 import Input from "../../components/input/Input";
 import InputDropdown from "../../components/input/InputDropdown";
+import InputDropdownNew from "../../components/input/InputDropdownNew";
 import Button from "../../components/button/Button";
 
 import Form from "../../components/form/Form";
@@ -15,8 +16,8 @@ const EditProfile = ({ closeModal }) => {
 
     const [profile, setProfile] = useState({});
     const [editingPrep, setEditingPrep] = useState(true);
-    const [deviceOptions, setDeviceOptions] = useState([]);
-    const [experienceOptions, setExperienceOptions] = useState([]);
+    const [platformMetadata, setPlatformMetadata] = useState({});
+    const [experienceMetadata, setExperienceMetadata] = useState({});
     const [error, setError] = useState(false);
 
     const [message, setMessage] = useState({
@@ -43,11 +44,11 @@ const EditProfile = ({ closeModal }) => {
             setEditingPrep(true);
             try {
                 const resProfile = await apiCall("/users/profile");
-                const resExperiences = await apiCall("/metadata/experiences");
-                const resPlatforms = await apiCall("/metadata/platforms");
+                const resExperiencesAltFormat = await apiCall("/metadata/sets/level?asArray=true&sortBy=pos&desc=false");
+                const resPlatformsAltFormat = await apiCall("/metadata/sets/platforms?asArray=true&sortBy=label&desc=true");
                 setProfile(resProfile.data);
-                setExperienceOptions(resExperiences.data);
-                setDeviceOptions(resPlatforms.data);
+                setExperienceMetadata(resExperiencesAltFormat.data);
+                setPlatformMetadata(resPlatformsAltFormat.data);
             } catch (error) {
                 console.error("User and Metadata fetching failed:", error);
                 setError(true);
@@ -113,20 +114,26 @@ const EditProfile = ({ closeModal }) => {
                         onChange={setFirstName}
                         placeholder={`(current) ${profile.firstName || "Not Set"}`}
                     />
-                    <InputDropdown
+                    <InputDropdownNew
                         label={"New Platform"}
                         value={device}
-                        id="platform"
+                        id="platformNew"
                         onChange={setDevice}
-                        options={deviceOptions}
+                        options={platformMetadata.setData}
+                        optionKey="key"
+                        optionValue="key"
+                        optionLabel="label"
                         placeholder={`(current) ${profile.devicePlatform || "Not Set"}`}
                     />
-                    <InputDropdown
+                    <InputDropdownNew
                         label={"New Experience Level"}
                         value={experience}
-                        id="experience"
+                        id="experienceNew"
                         onChange={setExperience}
-                        options={experienceOptions}
+                        options={experienceMetadata.setData}
+                        optionKey="key"
+                        optionValue="key"
+                        optionLabel="label"
                         placeholder={`(current) ${profile.experienceLvl || "Not Set"}`}
                     />
                     <Button

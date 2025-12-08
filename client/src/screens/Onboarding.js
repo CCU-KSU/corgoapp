@@ -38,7 +38,7 @@ const Onboarding = ({ setViewParams }) => {
         const fetchChecklist = async () => {
             setChecklistLoading(true);
             try {
-                const res = await apiCall("/checklist/onboarding");
+                const res = await apiCall("/checklists/onboarding");
                 setChecklist(res.data);
             } catch (error) {
                 console.error("Error fetching checklist:", error);

@@ -3,52 +3,59 @@ import { db } from "../configs/firebase.js";
 const METADATA_COLLECTIONS = "metadata";
 
 /**
- * Retrieves Goals List
+ * Retrieves a metadata set by its ID.
+ * @param {string} id - The ID of the metadata set to retrieve.
+ * @returns {Promise<Object>} A promise that resolves with the metadata set data.
  */
-export const getGoalsDb = async () => {
-    const goalsRef = db.collection(METADATA_COLLECTIONS).doc("master_goals");
+export const getMetadataSetDb = async (id) => {
     try {
-        const goals = await goalsRef.get();
-        if (!goals.exists || !goals.data()) {
-            throw new Error("Master goals document not found or empty.");
+        const metadataDoc = await db.collection(METADATA_COLLECTIONS).doc(id).get();
+        if (!metadataDoc.exists) {
+            throw new Error("Metadata set not found.");
         }
-        return goals.data(); 
+        return metadataDoc.data();
     } catch (error) {
-        console.error("Error retrieving goals from metadata DB:", error);
-        throw new Error("Failed to retrieve goals data.");
+        console.error("Error retrieving metadata set from DB:", error);
+        throw new Error("Failed to retrieve metadata set.");
     }
 };
 
 /**
- * Retrieves Platforms List
+ * Retrieves all metadata sets as an array of objects with id and setName.
+ * @returns {Promise<Array>} A promise that resolves with an array of all metadata sets.
  */
-export const getPlatformsDb = async () => {
-    const platformsRef = db.collection(METADATA_COLLECTIONS).doc("master_platforms");
+export const getAllMetadataSetsDb = async () => {
     try {
-        const platforms = await platformsRef.get();
-        if (!platforms.exists || !platforms.data()) {
-            throw new Error("Master platforms document not found or empty.");
-        }
-        return platforms.data(); 
+        const snapshot = await db.collection(METADATA_COLLECTIONS).get();
+        const metadataSets = [];
+        snapshot.forEach(doc => {
+            metadataSets.push({
+                id: doc.id,
+                setName: doc.data().setName || null
+            });
+        });
+        return metadataSets;
     } catch (error) {
-        console.error("Error retrieving platforms from metadata DB:", error);
-        throw new Error("Failed to retrieve platforms data.");
-    } 
+        console.error("Error retrieving all metadata sets from DB:", error);
+        throw new Error("Failed to retrieve metadata sets.");
+    }
 };
 
 /**
- * Retrieves Experiences List
+ * Updates a metadata set by its ID with the provided data.
+ * @param {string} docId - The ID of the metadata set to update.
+ * @param {object} updatedData - The data to update the metadata set with.
+ * @returns {Promise<void>} A promise that resolves when the update is complete.
  */
-export const getExperiencesDb = async () => {
-    const experiencesRef = db.collection(METADATA_COLLECTIONS).doc("master_experience_level");
+export const updateMetadataSetDb = async (docId, updatedData) => {
+    const metadataRef = db.collection(METADATA_COLLECTIONS).doc(docId);
     try {
-        const experiences = await experiencesRef.get();
-        if (!experiences.exists || !experiences.data()) {
-            throw new Error("Master experience level document not found or empty.");
-        }
-        return experiences.data(); 
+        await metadataRef.update({
+            setData: updatedData,
+            updatedAt: new Date()
+        });
     } catch (error) {
-        console.error("Error retrieving experiences from metadata DB:", error);
-        throw new Error("Failed to retrieve experience data.");
-    } 
+        console.error(`Error updating metadata set for doc ${docId}:`, error);
+        throw new Error("Failed to update metadata set.");
+    }
 };

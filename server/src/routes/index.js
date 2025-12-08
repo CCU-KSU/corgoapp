@@ -13,6 +13,6 @@ router.use("/catalog", catalogRoutes);
 router.use("/users", usersRoutes);
 router.use("/metadata", metadataRoutes);
 router.use("/docs", docsRoutes);
-router.use("/checklist", checklistRoutes);
+router.use("/checklists", checklistRoutes);
 
 export default router;

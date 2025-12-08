@@ -49,9 +49,9 @@ const Feed = ({ setViewParams }) => {
                     }
                 }
                 const resCatalog = await apiCall(`/catalog?index=${initialIndex}&goals=${resProfile_.data.goals.join(",")}`);
-                const resGoals = await apiCall("/metadata/goals");
+                const resGoals = await apiCall("/metadata/sets/goals?asArray=true&sortBy=pos&desc=false");
                 setPageData(resCatalog.data); 
-                setGoalTermOptions(resGoals.data);               
+                setGoalTermOptions(resGoals.data.setData);               
             } catch (error) {
                 console.error("Catalog fetching failed:", error);
                 setError(true);

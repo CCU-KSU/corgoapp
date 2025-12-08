@@ -17,7 +17,7 @@ export const cleanUpdateData = (data) => {
  * @param {object} collection 
  * @param {string} sortKey
  */
-export const transformCollectionToArray = (collection, sortKey = 'order') => {
+export const transformCollectionToArray = (collection, sortKey = 'order', desc = false) => {
     if (!collection || typeof collection !== 'object' || Array.isArray(collection)) {
         return [];
     }
@@ -28,10 +28,10 @@ export const transformCollectionToArray = (collection, sortKey = 'order') => {
     }));
 
     if (sortKey) {
-        return transformedArray.sort((a, b) => {
+        transformedArray.sort((a, b) => {
             const valA = a[sortKey] || Infinity; 
             const valB = b[sortKey] || Infinity;
-            return valA - valB;
+            return desc ? valB - valA : valA - valB;
         });
     }
 

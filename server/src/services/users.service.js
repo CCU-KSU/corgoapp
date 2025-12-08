@@ -27,14 +27,14 @@ export const createProfileSvc = async (uid, email, profileInput) => {
 export const getUserProfileSvc = async (uid) => {
     const rawUserData = await usersDb.getUserProfileDb(uid);
 
-    const platformsObject = await metadataDb.getPlatformsDb();
-    const experiencesObject = await metadataDb.getExperiencesDb();
+    const platformsObject = await metadataDb.getMetadataSetDb("platforms");
+    const experiencesObject = await metadataDb.getMetadataSetDb("level");
 
     const devicePlatformCode = rawUserData.devicePlatform;
     const experienceLevelCode = rawUserData.experienceLvl;
 
-    const platformLabel = platformsObject.platforms[devicePlatformCode]?.label || null;
-    const experienceLabel = experiencesObject.levels[experienceLevelCode]?.label || null;
+    const platformLabel = platformsObject.setData[devicePlatformCode]?.label || null;
+    const experienceLabel = experiencesObject.setData[experienceLevelCode]?.label || null;
 
     const { 
         devicePlatform,
